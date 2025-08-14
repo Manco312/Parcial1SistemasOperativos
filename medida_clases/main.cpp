@@ -15,16 +15,16 @@
  */
 void mostrarMenu() {
     std::cout << "\n\n=== MENÚ PRINCIPAL ===";
-    std::cout << "\n0. Crear nuevo conjunto de datos por valor";
-    std::cout << "\n1. Crear nuevo conjunto de datos con apuntadores";
-    std::cout << "\n2. Mostrar resumen de todas las personas";
-    std::cout << "\n3. Mostrar detalle completo por índice";
-    std::cout << "\n4. Buscar persona por ID";
-    std::cout << "\n5. Buscar persona mas longeva por valor";
-    std::cout << "\n6. Buscar persona mas longeva por referencia";
-    std::cout << "\n7. Mostrar estadísticas de rendimiento";
-    std::cout << "\n8. Exportar estadísticas a CSV";
-    std::cout << "\n9. Salir";
+    std::cout << "\n0. Crear nuevo conjunto de datos por valor.";
+    std::cout << "\n1. Crear nuevo conjunto de datos con apuntadores.";
+    std::cout << "\n2. Mostrar resumen de todas las personas.";
+    std::cout << "\n3. Mostrar detalle completo por índice.";
+    std::cout << "\n4. Buscar persona por ID.";
+    std::cout << "\n5. Buscar persona mas longeva por valor.";
+    std::cout << "\n6. Buscar persona mas longeva por referencia.";
+    std::cout << "\n7. Mostrar estadísticas de rendimiento.";
+    std::cout << "\n8. Exportar estadísticas a CSV.";
+    std::cout << "\n9. Salir.";
     std::cout << "\nSeleccione una opción: ";
 }
 
