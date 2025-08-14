@@ -15,13 +15,13 @@
  */
 void mostrarMenu() {
     std::cout << "\n\n=== MENÚ PRINCIPAL ===";
-    std::cout << "\n0. Crear nuevo conjunto de datos por valor.";
-    std::cout << "\n1. Crear nuevo conjunto de datos con apuntadores.";
-    std::cout << "\n2. Mostrar resumen de todas las personas.";
-    std::cout << "\n3. Mostrar detalle completo por índice.";
-    std::cout << "\n4. Buscar persona por ID.";
-    std::cout << "\n5. Buscar persona mas longeva por valor.";
-    std::cout << "\n6. Buscar persona mas longeva por referencia.";
+    std::cout << "\n0. Crear nuevo conjunto de datos.";
+    std::cout << "\n1. Mostrar resumen de todas las personas.";
+    std::cout << "\n2. Mostrar detalle completo por índice.";
+    std::cout << "\n3. Buscar persona por ID.";
+    std::cout << "\n4. Buscar persona mas longeva por valor.";
+    std::cout << "\n5. Buscar persona mas longeva por referencia.";
+    std::cout << "\n6. Buscar persona con mas patrimonio por valor en ciudad.";
     std::cout << "\n7. Mostrar estadísticas de rendimiento.";
     std::cout << "\n8. Exportar estadísticas a CSV.";
     std::cout << "\n9. Salir.";
@@ -87,37 +87,8 @@ int main() {
                 monitor.registrar("Crear datos por valor", tiempo_gen, memoria_gen);
                 break;
             }
-                
+
             case 1: { // Mostrar resumen de todas las personas
-                int n;
-                std::cout << "\nIngrese el número de personas a generar: ";
-                std::cin >> n;
-                
-                if (n <= 0) {
-                    std::cout << "Error: Debe generar al menos 1 persona\n";
-                    break;
-                }
-                
-
-                // Generar el nuevo conjunto de personas con apuntadores
-                personas = std::make_unique<std::vector<Persona>>();
-                generarColeccionReferencia(*personas, n); // Llamada por referencia para evitar copias
-                tam = personas->size();
-
-                
-                // Medir tiempo y memoria usada
-                double tiempo_gen = monitor.detener_tiempo();
-                long memoria_gen = monitor.obtener_memoria() - memoria_inicio;
-                
-                std::cout << "Generadas " << tam << " personas en " 
-                          << tiempo_gen << " ms, Memoria: " << memoria_gen << " KB\n";
-                
-                // Registrar la operación
-                monitor.registrar("Crear datos con Apuntadores", tiempo_gen, memoria_gen);
-                break;
-            }
-
-            case 2: { // Mostrar resumen de todas las personas
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 o 1 primero.\n";
                     break;
@@ -137,7 +108,7 @@ int main() {
                 break;
             }
                 
-            case 3: { // Mostrar detalle por índice
+            case 2: { // Mostrar detalle por índice
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
                     break;
@@ -163,7 +134,7 @@ int main() {
                 break;
             }
                 
-            case 4: { // Buscar por ID
+            case 3: { // Buscar por ID
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
                     break;
@@ -184,7 +155,7 @@ int main() {
                 break;
             }
 
-            case 5: { // Buscar persona más longeva por valor
+            case 4: { // Buscar persona más longeva por valor
 
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
@@ -213,6 +184,12 @@ int main() {
                     std::cout << "\nIngrese la ciudad: ";
                     std::string ciudad;
                     std::cin >> ciudad;
+
+                    if (ciudad.empty() || !ciudadValida(ciudad)) {
+                        std::cout << "Ciudad no puede estar vacía!\n";
+                        break;
+                    }
+
                     Persona encontrada = buscarMasLongevoPorValorEnCiudad(*personas, ciudad);
                     encontrada.mostrar();
                     
@@ -227,7 +204,7 @@ int main() {
 
             }
 
-            case 6: { // Buscar persona más longeva por referencia
+            case 5: { // Buscar persona más longeva por referencia
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
                     break;
@@ -256,12 +233,86 @@ int main() {
                     std::cout << "\nIngrese la ciudad: ";
                     std::string ciudad;
                     std::cin >> ciudad;
+
+                    if (ciudad.empty() || !ciudadValida(ciudad)) {
+                        std::cout << "Ciudad no puede estar vacía!\n";
+                        break;
+                    }
+
                     const Persona* encontrada = buscarMasLongevoPorReferenciaEnCiudad(*personas, ciudad);
                     encontrada->mostrar();
                     
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
                     monitor.registrar("Buscar persona más longeva por referencia en ciudad", tiempo_busqueda, memoria_busqueda);
+                    break;
+                } else {
+                    std::cout << "Opción inválida!\n";
+                    break;
+                }
+
+            }
+
+            case 6: { // Buscar persona más rica por valor
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }
+                
+                std::cout << "\nPresione 1 para buscar por país";
+                std::cout << "\nPresione 2 para buscar por ciudad\n";
+                std::cout << "\nPresione 3 para buscar por grupo de declaración (A, B o C)\n";
+
+                int opcionBusqueda;
+                std::cin >> opcionBusqueda;
+
+                if (opcionBusqueda == 1) {
+
+                    std::cout << "\nBuscando persona más rica por valor...";
+
+                    Persona encontrada = buscarMasPatrimonioPorValor(*personas);
+                    encontrada.mostrar();
+                    
+                    double tiempo_busqueda = monitor.detener_tiempo();
+                    long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    monitor.registrar("Buscar mas rica por valor", tiempo_busqueda, memoria_busqueda);
+                    break;
+
+                } else if (opcionBusqueda == 2) {
+
+                    std::cout << "\nIngrese la ciudad: ";
+                    std::string ciudad;
+                    std::cin >> ciudad;
+
+                    if (ciudad.empty() || !ciudadValida(ciudad)) {
+                        std::cout << "Ciudad no puede estar vacía!\n";
+                        break;
+                    }
+
+                    Persona encontrada = buscarMasPatrimonioPorValorEnCiudad(*personas, ciudad);
+                    encontrada.mostrar();
+
+                    double tiempo_busqueda = monitor.detener_tiempo();
+                    long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    monitor.registrar("Buscar persona más rica por valor en ciudad", tiempo_busqueda, memoria_busqueda);
+                    break;
+                } else if (opcionBusqueda == 3) {
+
+                    std::cout << "\nIngrese el grupo de declaración (A, B o C): ";
+                    std::string grupo;
+                    std::cin >> grupo;
+
+                    if (grupo != "A" && grupo != "B" && grupo != "C") {
+                        std::cout << "Grupo inválido. Debe ser A, B o C.\n";
+                        break;
+                    }
+
+                    Persona encontrada = buscarMasPatrimonioPorValorEnGrupo(*personas, grupo);
+                    encontrada.mostrar();
+
+                    double tiempo_busqueda = monitor.detener_tiempo();
+                    long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    monitor.registrar("Buscar persona más rica por valor en grupo", tiempo_busqueda, memoria_busqueda);
                     break;
                 } else {
                     std::cout << "Opción inválida!\n";

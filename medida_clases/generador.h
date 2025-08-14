@@ -6,6 +6,8 @@
 
 // Funciones para generación de datos aleatorios
 
+bool ciudadValida(const std::string& ciudad);
+
 /**
  * Genera una fecha de nacimiento aleatoria entre 1960 y 2010.
  * 
@@ -50,7 +52,6 @@ Persona generarPersona();
  * PARA QUÉ: Pruebas de rendimiento y funcionalidad con volúmenes variables.
  */
 std::vector<Persona> generarColeccion(int n);
-void generarColeccionReferencia(std::vector<Persona>& personas, int n);
 
 /**
  * Busca una persona por ID en un vector de personas.
@@ -65,11 +66,16 @@ void generarColeccionReferencia(std::vector<Persona>& personas, int n);
  */
 const Persona* buscarPorID(const std::vector<Persona>& personas, const std::string& id);
 
-
 Persona buscarMasLongevoPorValor(std::vector<Persona> personas);
 const Persona* buscarMasLongevoPorReferencia(const std::vector<Persona>& personas);
-
 Persona buscarMasLongevoPorValorEnCiudad(std::vector<Persona> personas, const std::string& ciudad);
 const Persona* buscarMasLongevoPorReferenciaEnCiudad(const std::vector<Persona>& personas, const std::string& ciudad);
+
+Persona buscarMasPatrimonioPorValor(std::vector<Persona> personas);
+const Persona* buscarMasPatrimonioPorReferencia(const std::vector<Persona>& personas);
+Persona buscarMasPatrimonioPorValorEnCiudad(std::vector<Persona> personas, const std::string& ciudad);
+const Persona* buscarMasPatrimonioPorReferenciaEnCiudad(const std::vector<Persona>& personas, const std::string& ciudad);
+Persona buscarMasPatrimonioPorValorEnGrupo(std::vector<Persona> personas, const std::string& grupo);
+const Persona* buscarMasPatrimonioPorReferenciaEnGrupo(const std::vector<Persona>& personas, const std::string& grupo);
 
 #endif // GENERADOR_H

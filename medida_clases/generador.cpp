@@ -32,6 +32,12 @@ const std::vector<std::string> ciudadesColombia = {
     "Manizales", "Pasto", "Neiva", "Villavicencio", "Armenia", "Sincelejo", "Valledupar", "Montería", "Popayán", "Tunja"
 };
 
+
+bool ciudadValida(const std::string& ciudad) {
+    return std::find(ciudadesColombia.begin(), ciudadesColombia.end(), ciudad) != ciudadesColombia.end();
+}
+
+
 /**
  * Implementación de generarFechaNacimiento.
  * 
@@ -139,14 +145,6 @@ std::vector<Persona> generarColeccion(int n) {
     return personas;
 }
 
-void generarColeccionReferencia(std::vector<Persona>& personas, int n) {
-    personas.reserve(n); // Reserva espacio para n personas (eficiencia)
-    
-    for (int i = 0; i < n; ++i) {
-        personas.push_back(generarPersona());
-    }
-}
-
 /**
  * Implementación de buscarPorID.
  * 
@@ -220,4 +218,97 @@ const Persona* buscarMasLongevoPorReferenciaEnCiudad(const std::vector<Persona>&
     // Buscar el más longevo en las filtradas
     return *std::max_element(filtradas.begin(), filtradas.end(),
         [](const Persona* a, const Persona* b) { return a->getEdad() < b->getEdad(); });
+}
+
+// --- Versión por valor ---
+Persona buscarMasPatrimonioPorValor(std::vector<Persona> personas) {
+    return *std::max_element(personas.begin(), personas.end(),
+        [](const Persona& a, const Persona& b) { return a.getPatrimonio() < b.getPatrimonio(); });
+}
+
+// --- Versión por referencia ---
+const Persona* buscarMasPatrimonioPorReferencia(const std::vector<Persona>& personas) {
+
+    if (personas.empty()) return nullptr;
+
+    auto it = std::max_element(personas.begin(), personas.end(),
+        [](const Persona& a, const Persona& b) { return a.getPatrimonio() < b.getPatrimonio(); });
+
+    return &(*it);
+}
+
+// --- Versión por valor en ciudad ---
+Persona buscarMasPatrimonioPorValorEnCiudad(std::vector<Persona> personas, const std::string& ciudad) {
+    // Filtrar solo personas de la ciudad especificada
+    std::vector<Persona> filtradas;
+    for (const auto& p : personas) {
+        if (p.getCiudadNacimiento() == ciudad) {
+            filtradas.push_back(p);
+        }
+    }
+
+    if (filtradas.empty()) {
+        throw std::runtime_error("No hay personas registradas en la ciudad: " + ciudad);
+    }
+
+    // Buscar el más rico en las filtradas
+    return *std::max_element(filtradas.begin(), filtradas.end(),
+        [](const Persona& a, const Persona& b) { return a.getPatrimonio() < b.getPatrimonio(); });
+}
+
+// --- Versión por referencia en ciudad ---
+const Persona* buscarMasPatrimonioPorReferenciaEnCiudad(const std::vector<Persona>& personas, const std::string& ciudad) {
+    // Filtrar solo personas de la ciudad especificada
+    std::vector<const Persona*> filtradas;
+    for (const auto& p : personas) {
+        if (p.getCiudadNacimiento() == ciudad) {
+            filtradas.push_back(&p);
+        }
+    }
+
+    if (filtradas.empty()) {
+        throw std::runtime_error("No hay personas registradas en la ciudad: " + ciudad);
+    }
+
+    // Buscar el más rico en las filtradas
+    return *std::max_element(filtradas.begin(), filtradas.end(),
+        [](const Persona* a, const Persona* b) { return a->getPatrimonio() < b->getPatrimonio(); });
+}
+
+// --- Versión por valor en ciudad ---
+Persona buscarMasPatrimonioPorValorEnGrupo(std::vector<Persona> personas, const std::string& grupo) {
+    // Filtrar solo personas del grupo especificado
+    std::vector<Persona> filtradas;
+    for (const auto& p : personas) {
+        if (p.getGrupoDeclaracion() == grupo) {
+            filtradas.push_back(p);
+        }
+    }
+
+    if (filtradas.empty()) {
+        throw std::runtime_error("No hay personas registradas en el grupo: " + grupo);
+    }
+
+    // Buscar el más rico en las filtradas
+    return *std::max_element(filtradas.begin(), filtradas.end(),
+        [](const Persona& a, const Persona& b) { return a.getPatrimonio() < b.getPatrimonio(); });
+}
+
+// --- Versión por referencia en grupo ---
+const Persona* buscarMasPatrimonioPorReferenciaEnGrupo(const std::vector<Persona>& personas, const std::string& grupo) {
+    // Filtrar solo personas del grupo especificado
+    std::vector<const Persona*> filtradas;
+    for (const auto& p : personas) {
+        if (p.getGrupoDeclaracion() == grupo) {
+            filtradas.push_back(&p);
+        }
+    }
+
+    if (filtradas.empty()) {
+        throw std::runtime_error("No hay personas registradas en el grupo: " + grupo);
+    }
+
+    // Buscar el más rico en las filtradas
+    return *std::max_element(filtradas.begin(), filtradas.end(),
+        [](const Persona* a, const Persona* b) { return a->getPatrimonio() < b->getPatrimonio(); });
 }
