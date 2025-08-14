@@ -233,15 +233,41 @@ int main() {
                     break;
                 }
                 
-                std::cout << "\nBuscando persona más longeva por referencia...";
+                std::cout << "\nPresione 1 para buscar por país";
+                std::cout << "\nPresione 2 para buscar por ciudad\n";
+
+                int opcionBusqueda;
+                std::cin >> opcionBusqueda;
+
+                if (opcionBusqueda == 1) {
+
+                    std::cout << "\nBuscando persona más longeva por referencia...";
                 
-                const Persona* encontrada = buscarMasLongevoPorReferencia(*personas);
-                encontrada->mostrar();
-                
-                double tiempo_busqueda = monitor.detener_tiempo();
-                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
-                monitor.registrar("Buscar mas longeva por referencia", tiempo_busqueda, memoria_busqueda);
-                break;
+                    const Persona* encontrada = buscarMasLongevoPorReferencia(*personas);
+                    encontrada->mostrar();
+                    
+                    double tiempo_busqueda = monitor.detener_tiempo();
+                    long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    monitor.registrar("Buscar mas longeva por referencia", tiempo_busqueda, memoria_busqueda);
+                    break;
+
+                } else if (opcionBusqueda == 2) {
+
+                    std::cout << "\nIngrese la ciudad: ";
+                    std::string ciudad;
+                    std::cin >> ciudad;
+                    const Persona* encontrada = buscarMasLongevoPorReferenciaEnCiudad(*personas, ciudad);
+                    encontrada->mostrar();
+                    
+                    double tiempo_busqueda = monitor.detener_tiempo();
+                    long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    monitor.registrar("Buscar persona más longeva por referencia en ciudad", tiempo_busqueda, memoria_busqueda);
+                    break;
+                } else {
+                    std::cout << "Opción inválida!\n";
+                    break;
+                }
+
             }
                 
             case 7: // Mostrar estadísticas de rendimiento

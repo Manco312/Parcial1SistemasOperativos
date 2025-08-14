@@ -70,5 +70,6 @@ Persona buscarMasLongevoPorValor(std::vector<Persona> personas);
 const Persona* buscarMasLongevoPorReferencia(const std::vector<Persona>& personas);
 
 Persona buscarMasLongevoPorValorEnCiudad(std::vector<Persona> personas, const std::string& ciudad);
+const Persona* buscarMasLongevoPorReferenciaEnCiudad(const std::vector<Persona>& personas, const std::string& ciudad);
 
 #endif // GENERADOR_H

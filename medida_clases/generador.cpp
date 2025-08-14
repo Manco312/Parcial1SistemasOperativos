@@ -202,3 +202,22 @@ Persona buscarMasLongevoPorValorEnCiudad(std::vector<Persona> personas, const st
     return *std::max_element(filtradas.begin(), filtradas.end(),
         [](const Persona& a, const Persona& b) { return a.getEdad() < b.getEdad(); });
 }
+
+// --- Versión por referencia en ciudad ---
+const Persona* buscarMasLongevoPorReferenciaEnCiudad(const std::vector<Persona>& personas, const std::string& ciudad) {
+    // Filtrar solo personas de la ciudad especificada
+    std::vector<const Persona*> filtradas;
+    for (const auto& p : personas) {
+        if (p.getCiudadNacimiento() == ciudad) {
+            filtradas.push_back(&p);
+        }
+    }
+
+    if (filtradas.empty()) {
+        throw std::runtime_error("No hay personas registradas en la ciudad: " + ciudad);
+    }
+
+    // Buscar el más longevo en las filtradas
+    return *std::max_element(filtradas.begin(), filtradas.end(),
+        [](const Persona* a, const Persona* b) { return a->getEdad() < b->getEdad(); });
+}
