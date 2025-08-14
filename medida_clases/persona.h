@@ -19,6 +19,7 @@ private:
     std::string id;               // Identificador único (cédula)
     std::string ciudadNacimiento; // Ciudad de nacimiento
     std::string fechaNacimiento;  // Fecha de nacimiento en formato DD/MM/AAAA
+    std::string grupoDeclaracion; // Grupo declaración de renta
     int edad;                     // Edad calculada a partir de la fecha de nacimiento
     double ingresosAnuales;       // Ingresos anuales en pesos colombianos
     double patrimonio;            // Patrimonio total (activos)
@@ -34,7 +35,7 @@ public:
      * PARA QUÉ: Construir objetos Persona completos y válidos.
      */
     Persona(std::string nom, std::string ape, std::string id, 
-            std::string ciudad, std::string fecha, int edad, double ingresos, 
+            std::string ciudad, std::string fecha, std::string grupoDeclaracion, int edad, double ingresos, 
             double patri, double deud, bool declara);
     
     // Métodos de acceso (getters) - Implementados inline para eficiencia
@@ -43,6 +44,7 @@ public:
     std::string getId() const { return id; }
     std::string getCiudadNacimiento() const { return ciudadNacimiento; }
     std::string getFechaNacimiento() const { return fechaNacimiento; }
+    std::string getGrupoDeclaracion() const { return grupoDeclaracion; }
     int getEdad() const { return edad; }
     double getIngresosAnuales() const { return ingresosAnuales; }
     double getPatrimonio() const { return patrimonio; }

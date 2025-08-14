@@ -96,6 +96,20 @@ Persona generarPersona() {
     std::string id = generarID();
     std::string ciudad = ciudadesColombia[rand() % ciudadesColombia.size()];
     std::string fecha = generarFechaNacimiento();
+
+    // Generar grupo en base a los dos últimos digitos del id (convertirlo a int)
+    int ultDigitos = std::stoi(id.substr(id.length() - 2));
+    std::string grupo;
+
+    // Asigna el grupo de declaración basado en el grupo
+    if (ultDigitos >= 0 && ultDigitos <= 39) {
+        grupo = "A";
+    } else if (ultDigitos >= 40 && ultDigitos <= 79) {
+        grupo = "B";
+    } else {
+        grupo = "C";
+    }
+
     int edad = 2025 - std::stoi(fecha.substr(fecha.find_last_of('/') + 1)); // Calcula edad aproximada
 
     // Genera datos financieros realistas
@@ -104,7 +118,7 @@ Persona generarPersona() {
     double deudas = randomDouble(0, patrimonio * 0.7);     // Deudas hasta el 70% del patrimonio
     bool declarante = (ingresos > 50000000) && (rand() % 100 > 30); // Probabilidad 70% si ingresos > 50M
     
-    return Persona(nombre, apellido, id, ciudad, fecha, edad, ingresos, patrimonio, deudas, declarante);
+    return Persona(nombre, apellido, id, ciudad, fecha, grupo, edad, ingresos, patrimonio, deudas, declarante);
 }
 
 /**
@@ -153,15 +167,11 @@ const Persona* buscarPorID(const std::vector<Persona>& personas, const std::stri
 }
 
 // --- Versión por valor ---
-const Persona* buscarMasLongevoPorValor(std::vector<Persona> personas) {
-
-    if (personas.empty()) return nullptr;
-
-    auto it = std::max_element(personas.begin(), personas.end(),
+Persona buscarMasLongevoPorValor(std::vector<Persona> personas) {
+    return *std::max_element(personas.begin(), personas.end(),
         [](const Persona& a, const Persona& b) { return a.getEdad() < b.getEdad(); });
-
-    return &(*it);
 }
+
 
 // --- Versión por referencia ---
 const Persona* buscarMasLongevoPorReferencia(const std::vector<Persona>& personas) {

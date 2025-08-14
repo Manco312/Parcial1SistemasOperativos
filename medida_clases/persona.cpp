@@ -9,13 +9,14 @@
  * PARA QUÉ: Eficiencia y correcta construcción del objeto.
  */
 Persona::Persona(std::string nom, std::string ape, std::string id, 
-                 std::string ciudad, std::string fecha, int edad, double ingresos, 
+                 std::string ciudad, std::string fecha, std::string grupo, int edad, double ingresos, 
                  double patri, double deud, bool declara)
     : nombre(std::move(nom)), 
       apellido(std::move(ape)), 
       id(std::move(id)), 
       ciudadNacimiento(std::move(ciudad)),
       fechaNacimiento(std::move(fecha)),
+      grupoDeclaracion(std::move(grupo)),
       edad(edad), 
       ingresosAnuales(ingresos), 
       patrimonio(patri),
@@ -34,6 +35,7 @@ void Persona::mostrar() const {
     std::cout << "[" << id << "] Nombre: " << nombre << " " << apellido << "\n";
     std::cout << "   - Ciudad de nacimiento: " << ciudadNacimiento << "\n";
     std::cout << "   - Fecha de nacimiento: " << fechaNacimiento << "\n\n";
+    std::cout << "   - Grupo de declaración: " << grupoDeclaracion << "\n";
     std::cout << std::fixed << std::setprecision(2); // Formato de números
     std::cout << "   - Edad: " << edad << " años\n";
     std::cout << "   - Ingresos anuales: $" << ingresosAnuales << "\n";

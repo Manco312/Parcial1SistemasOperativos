@@ -66,7 +66,7 @@ void generarColeccionReferencia(std::vector<Persona>& personas, int n);
 const Persona* buscarPorID(const std::vector<Persona>& personas, const std::string& id);
 
 
-const Persona* buscarMasLongevoPorValor(std::vector<Persona> personas);
+Persona buscarMasLongevoPorValor(std::vector<Persona> personas);
 const Persona* buscarMasLongevoPorReferencia(const std::vector<Persona>& personas);
 
 #endif // GENERADOR_H

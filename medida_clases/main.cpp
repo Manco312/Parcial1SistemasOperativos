@@ -20,9 +20,11 @@ void mostrarMenu() {
     std::cout << "\n2. Mostrar resumen de todas las personas";
     std::cout << "\n3. Mostrar detalle completo por índice";
     std::cout << "\n4. Buscar persona por ID";
-    std::cout << "\n5. Mostrar estadísticas de rendimiento";
-    std::cout << "\n6. Exportar estadísticas a CSV";
-    std::cout << "\n7. Salir";
+    std::cout << "\n5. Buscar persona mas longeva por valor";
+    std::cout << "\n6. Buscar persona mas longeva por referencia";
+    std::cout << "\n7. Mostrar estadísticas de rendimiento";
+    std::cout << "\n8. Exportar estadísticas a CSV";
+    std::cout << "\n9. Salir";
     std::cout << "\nSeleccione una opción: ";
 }
 
@@ -181,16 +183,50 @@ int main() {
                 monitor.registrar("Buscar por ID", tiempo_busqueda, memoria_busqueda);
                 break;
             }
+
+            case 5: { // Buscar persona más longeva por valor
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }
                 
-            case 5: // Mostrar estadísticas de rendimiento
+                std::cout << "\nBuscando persona más longeva por valor...";
+                
+                Persona encontrada = buscarMasLongevoPorValor(*personas);
+                encontrada.mostrar();
+                
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Buscar persona más longeva por valor", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+
+            case 6: { // Buscar persona más longeva por referencia
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }
+                
+                std::cout << "\nBuscando persona más longeva por referencia...";
+                
+                const Persona* encontrada = buscarMasLongevoPorReferencia(*personas);
+                encontrada->mostrar();
+                
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Buscar mas longeva por referencia", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+                
+            case 7: // Mostrar estadísticas de rendimiento
                 monitor.mostrar_resumen();
                 break;
                 
-            case 6: // Exportar estadísticas a CSV
+            case 8: // Exportar estadísticas a CSV
                 monitor.exportar_csv();
                 break;
                 
-            case 7: // Salir
+            case 9: // Salir
                 std::cout << "Saliendo...\n";
                 break;
                 
@@ -199,13 +235,13 @@ int main() {
         }
         
         // Mostrar estadísticas de la operación (excepto para opciones 4,5,6)
-        if (opcion >= 0 && opcion <= 4) {
+        if (opcion >= 0 && opcion <= 6) {
             double tiempo = monitor.detener_tiempo();
             long memoria = monitor.obtener_memoria() - memoria_inicio;
             monitor.mostrar_estadistica("Opción " + std::to_string(opcion), tiempo, memoria);
         }
         
-    } while(opcion != 7);
+    } while(opcion != 9);
     
     return 0;
 }
