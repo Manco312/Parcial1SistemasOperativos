@@ -185,20 +185,46 @@ int main() {
             }
 
             case 5: { // Buscar persona más longeva por valor
+
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
                     break;
                 }
-                
-                std::cout << "\nBuscando persona más longeva por valor...";
-                
-                Persona encontrada = buscarMasLongevoPorValor(*personas);
-                encontrada.mostrar();
-                
-                double tiempo_busqueda = monitor.detener_tiempo();
-                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
-                monitor.registrar("Buscar persona más longeva por valor", tiempo_busqueda, memoria_busqueda);
-                break;
+
+                std::cout << "\nPresione 1 para buscar por país";
+                std::cout << "\nPresione 2 para buscar por ciudad\n";
+
+                int opcionBusqueda;
+                std::cin >> opcionBusqueda;
+
+                if (opcionBusqueda == 1) {
+
+                    std::cout << "\nBuscando persona más longeva del país...";
+                    Persona encontrada = buscarMasLongevoPorValor(*personas);
+                    encontrada.mostrar();
+                    
+                    double tiempo_busqueda = monitor.detener_tiempo();
+                    long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    monitor.registrar("Buscar persona más longeva por valor", tiempo_busqueda, memoria_busqueda);
+                    break;
+
+                } else if (opcionBusqueda == 2) {
+
+                    std::cout << "\nIngrese la ciudad: ";
+                    std::string ciudad;
+                    std::cin >> ciudad;
+                    Persona encontrada = buscarMasLongevoPorValorEnCiudad(*personas, ciudad);
+                    encontrada.mostrar();
+                    
+                    double tiempo_busqueda = monitor.detener_tiempo();
+                    long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    monitor.registrar("Buscar persona más longeva por valor en ciudad", tiempo_busqueda, memoria_busqueda);
+                    break;
+                } else {
+                    std::cout << "Opción inválida!\n";
+                    break;
+                }
+
             }
 
             case 6: { // Buscar persona más longeva por referencia
