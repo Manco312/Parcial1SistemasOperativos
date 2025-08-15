@@ -31,10 +31,10 @@ Persona::Persona(std::string nom, std::string ape, std::string id,
  * PARA QUÉ: Facilitar la lectura de los datos completos de una persona.
  */
 void Persona::mostrar() const {
-    std::cout << "-------------------------------------\n";
+    std::cout << "\n-------------------------------------\n";
     std::cout << "[" << id << "] Nombre: " << nombre << " " << apellido << "\n";
     std::cout << "   - Ciudad de nacimiento: " << ciudadNacimiento << "\n";
-    std::cout << "   - Fecha de nacimiento: " << fechaNacimiento << "\n\n";
+    std::cout << "   - Fecha de nacimiento: " << fechaNacimiento << "\n";
     std::cout << "   - Grupo de declaración: " << grupoDeclaracion << "\n";
     std::cout << std::fixed << std::setprecision(2); // Formato de números
     std::cout << "   - Edad: " << edad << " años\n";
