@@ -23,9 +23,11 @@ void mostrarMenu() {
     std::cout << "\n5. Buscar persona mas longeva por referencia.";
     std::cout << "\n6. Buscar persona con mas patrimonio por valor en ciudad.";
     std::cout << "\n7. Buscar persona con mas patrimonio por referencia en ciudad.";
-    std::cout << "\n8. Mostrar estadísticas de rendimiento.";
-    std::cout << "\n9. Exportar estadísticas a CSV.";
-    std::cout << "\n10. Salir.";
+    std::cout << "\n8. Listar personas por grupo (A, B o C) por valor.";
+    std::cout << "\n9. Listar personas por grupo (A, B o C) por referencia.";
+    std::cout << "\n10. Mostrar estadísticas de rendimiento.";
+    std::cout << "\n11. Exportar estadísticas a CSV.";
+    std::cout << "\n12. Salir.";
     std::cout << "\nSeleccione una opción: ";
 }
 
@@ -419,16 +421,62 @@ int main() {
                 }
 
             }
+
+            case 8: { // Listar por valor las personas de un grupo
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }
                 
-            case 8: // Mostrar estadísticas de rendimiento
+                std::string grupo;
+
+                std::cout << "\nIngrese el grupo a listar: ";
+                std::cin >> grupo;
+
+                monitor.iniciar_tiempo();
+                long memoria_inicio = monitor.obtener_memoria();
+                
+                auto personasGrupoA_valor = listarPersonasPorValorEnGrupo(*personas, grupo);
+                std::cout << "Personas en grupo " << grupo << " por valor: " << personasGrupoA_valor.size() << "\n";
+                
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Listar por grupo por valor", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+
+            case 9: { // Listar por referencia las personas de un grupo
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }
+                
+                std::string grupo;
+
+                std::cout << "\nIngrese el grupo a listar: ";
+                std::cin >> grupo;
+
+                monitor.iniciar_tiempo();
+                long memoria_inicio = monitor.obtener_memoria();
+                
+                auto personasGrupoA_ref = listarPersonasPorReferenciaEnGrupo(*personas, grupo);
+                std::cout << "Personas en grupo " << grupo << " por referencia: " << personasGrupoA_ref.size() << "\n";
+                
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Listar por grupo por referencia", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+                
+            case 10: // Mostrar estadísticas de rendimiento
                 monitor.mostrar_resumen();
                 break;
                 
-            case 9: // Exportar estadísticas a CSV
+            case 11: // Exportar estadísticas a CSV
                 monitor.exportar_csv();
                 break;
                 
-            case 10: // Salir
+            case 12: // Salir
                 std::cout << "Saliendo...\n";
                 break;
                 
@@ -436,7 +484,7 @@ int main() {
                 std::cout << "Opción inválida!\n";
         }
         
-    } while(opcion != 10);
+    } while(opcion != 12);
     
     return 0;
 }

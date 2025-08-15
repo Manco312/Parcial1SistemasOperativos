@@ -78,4 +78,7 @@ const Persona* buscarMasPatrimonioPorReferenciaEnCiudad(const std::vector<Person
 Persona buscarMasPatrimonioPorValorEnGrupo(std::vector<Persona> personas, const std::string& grupo);
 const Persona* buscarMasPatrimonioPorReferenciaEnGrupo(const std::vector<Persona>& personas, const std::string& grupo);
 
+std::vector<Persona> listarPersonasPorValorEnGrupo(std::vector<Persona> personas, const std::string& grupo);
+std::vector<const Persona*> listarPersonasPorReferenciaEnGrupo(const std::vector<Persona>& personas, const std::string& grupo);
+
 #endif // GENERADOR_H

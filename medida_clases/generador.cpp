@@ -312,3 +312,39 @@ const Persona* buscarMasPatrimonioPorReferenciaEnGrupo(const std::vector<Persona
     return *std::max_element(filtradas.begin(), filtradas.end(),
         [](const Persona* a, const Persona* b) { return a->getPatrimonio() < b->getPatrimonio(); });
 }
+
+/**
+ * Lista y cuenta personas de un grupo (por valor).
+ * 
+ * @param personas  Vector de personas.
+ * @param grupo     Grupo de declaración a filtrar (ej. "A", "B", "C").
+ * @return Vector con las personas del grupo especificado.
+ */
+std::vector<Persona> listarPersonasPorValorEnGrupo(std::vector<Persona> personas, const std::string& grupo) {
+    std::vector<Persona> filtradas;
+    for (const auto& p : personas) {
+        if (p.getGrupoDeclaracion() == grupo) {
+            p.mostrarResumen();
+            filtradas.push_back(p);
+        }
+    }
+    return filtradas;
+}
+
+/**
+ * Lista y cuenta personas de un grupo (por referencia).
+ * 
+ * @param personas  Vector de personas.
+ * @param grupo     Grupo de declaración a filtrar.
+ * @return Vector de punteros a personas del grupo especificado.
+ */
+std::vector<const Persona*> listarPersonasPorReferenciaEnGrupo(const std::vector<Persona>& personas, const std::string& grupo) {
+    std::vector<const Persona*> filtradas;
+    for (const auto& p : personas) {
+        if (p.getGrupoDeclaracion() == grupo) {
+            p.mostrarResumen();
+            filtradas.push_back(&p);
+        }
+    }
+    return filtradas;
+}
