@@ -59,6 +59,7 @@ int main() {
         int indice;
         std::string idBusqueda;
         
+        long memoria_inicio = monitor.obtener_memoria();
         
         switch(opcion) {
             case 0: { // Crear nuevo conjunto de datos
@@ -129,7 +130,6 @@ int main() {
                 }
 
                 monitor.iniciar_tiempo();
-                long memoria_inicio = monitor.obtener_memoria();
                 
                 tam = personas->size();
                 std::cout << "\nIngrese el índice (0-" << tam-1 << "): ";
@@ -164,7 +164,6 @@ int main() {
                 std::cin >> idBusqueda;
 
                 monitor.iniciar_tiempo();
-                long memoria_inicio = monitor.obtener_memoria();
                 
                 if(const Persona* encontrada = buscarPorID(*personas, idBusqueda)) {
                     encontrada->mostrar();
@@ -199,7 +198,6 @@ int main() {
                     std::cout << "\nBuscando persona más longeva del país...";
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     Persona encontrada = buscarMasLongevoPorValor(*personas);
                     encontrada.mostrar();
                     
@@ -220,7 +218,6 @@ int main() {
                     }
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     Persona encontrada = buscarMasLongevoPorValorEnCiudad(*personas, ciudad);
                     encontrada.mostrar();
                     
@@ -255,7 +252,6 @@ int main() {
                     std::cout << "\nBuscando persona más longeva por referencia...";
                     
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     const Persona* encontrada = buscarMasLongevoPorReferencia(*personas);
                     encontrada->mostrar();
                     
@@ -276,7 +272,6 @@ int main() {
                     }
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     const Persona* encontrada = buscarMasLongevoPorReferenciaEnCiudad(*personas, ciudad);
                     encontrada->mostrar();
                     
@@ -312,7 +307,6 @@ int main() {
                     std::cout << "\nBuscando persona más rica por valor...";
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     Persona encontrada = buscarMasPatrimonioPorValor(*personas);
                     encontrada.mostrar();
                     
@@ -333,7 +327,6 @@ int main() {
                     }
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     Persona encontrada = buscarMasPatrimonioPorValorEnCiudad(*personas, ciudad);
                     encontrada.mostrar();
 
@@ -353,7 +346,6 @@ int main() {
                     }
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     Persona encontrada = buscarMasPatrimonioPorValorEnGrupo(*personas, grupo);
                     encontrada.mostrar();
 
@@ -389,7 +381,6 @@ int main() {
                     std::cout << "\nBuscando persona más rica por referencia...";
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     const Persona* encontrada = buscarMasPatrimonioPorReferencia(*personas);
                     encontrada->mostrar();
                     
@@ -410,7 +401,6 @@ int main() {
                     }
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     const Persona* encontrada = buscarMasPatrimonioPorReferenciaEnCiudad(*personas, ciudad);
                     encontrada->mostrar();
 
@@ -430,7 +420,6 @@ int main() {
                     }
 
                     monitor.iniciar_tiempo();
-                    long memoria_inicio = monitor.obtener_memoria();
                     const Persona* encontrada = buscarMasPatrimonioPorReferenciaEnGrupo(*personas, grupo);
                     encontrada->mostrar();
 
@@ -460,7 +449,6 @@ int main() {
                 std::cin >> grupo;
 
                 monitor.iniciar_tiempo();
-                long memoria_inicio = monitor.obtener_memoria();
                 
                 auto personasGrupoA_valor = listarPersonasPorValorEnGrupo(*personas, grupo);
                 std::cout << "\n\nPersonas en grupo " << grupo << " por valor: " << personasGrupoA_valor.size() << "\n";
@@ -486,7 +474,6 @@ int main() {
                 std::cin >> grupo;
 
                 monitor.iniciar_tiempo();
-                long memoria_inicio = monitor.obtener_memoria();
                 
                 auto personasGrupoA_ref = listarPersonasPorReferenciaEnGrupo(*personas, grupo);
                 std::cout << "\n\nPersonas en grupo " << grupo << " por referencia: " << personasGrupoA_ref.size() << "\n";
@@ -507,7 +494,6 @@ int main() {
                 }
 
                 monitor.iniciar_tiempo();
-                long memoria_inicio = monitor.obtener_memoria();
 
                 verificarGruposMasivoPorValor(*personas);
 
@@ -527,7 +513,6 @@ int main() {
                 }
 
                 monitor.iniciar_tiempo();
-                long memoria_inicio = monitor.obtener_memoria();
 
                 verificarGruposMasivoPorReferencia(*personas);
 
