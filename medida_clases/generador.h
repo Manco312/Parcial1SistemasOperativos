@@ -81,4 +81,30 @@ const Persona* buscarMasPatrimonioPorReferenciaEnGrupo(const std::vector<Persona
 std::vector<Persona> listarPersonasPorValorEnGrupo(std::vector<Persona> personas, const std::string& grupo);
 std::vector<const Persona*> listarPersonasPorReferenciaEnGrupo(const std::vector<Persona>& personas, const std::string& grupo);
 
+/**
+ * Calcula el grupo correcto basado en los últimos dígitos de la cédula
+ */
+std::string calcularGrupoCorrectoPorCedula(const std::string& cedula);
+
+/**
+ * Verificación por valor - Recibe una copia de la persona
+ */
+bool verificarGrupoPorValor(Persona persona);
+
+/**
+ * Verificación por referencia - Recibe una referencia constante
+ */
+bool verificarGrupoPorReferencia(const Persona& persona);
+
+/**
+ * Verificación masiva por valor
+ */
+void verificarGruposMasivoPorValor(std::vector<Persona> personas);
+
+/**
+ * Verificación masiva por referencia
+ */
+void verificarGruposMasivoPorReferencia(const std::vector<Persona>& personas);
+
+
 #endif // GENERADOR_H

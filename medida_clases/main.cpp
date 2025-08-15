@@ -25,9 +25,11 @@ void mostrarMenu() {
     std::cout << "\n7. Buscar persona con mas patrimonio por referencia en ciudad.";
     std::cout << "\n8. Listar personas por grupo (A, B o C) por valor.";
     std::cout << "\n9. Listar personas por grupo (A, B o C) por referencia.";
-    std::cout << "\n10. Mostrar estadísticas de rendimiento.";
-    std::cout << "\n11. Exportar estadísticas a CSV.";
-    std::cout << "\n12. Salir.";
+    std::cout << "\n10. Verificar grupos por valor.";
+    std::cout << "\n11. Verificar grupos por referencia.";
+    std::cout << "\n12. Mostrar estadísticas de rendimiento.";
+    std::cout << "\n13. Exportar estadísticas a CSV.";
+    std::cout << "\n14. Salir.";
     std::cout << "\nSeleccione una opción: ";
 }
 
@@ -93,8 +95,11 @@ int main() {
 
             case 1: { // Mostrar resumen de todas las personas
                 if (!personas || personas->empty()) {
-                    std::cout << "\nNo hay datos disponibles. Use opción 0 o 1 primero.\n";
-                    break;
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
 
                 monitor.iniciar_tiempo();
@@ -117,7 +122,10 @@ int main() {
             case 2: { // Mostrar detalle por índice
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
 
                 monitor.iniciar_tiempo();
@@ -146,7 +154,10 @@ int main() {
             case 3: { // Buscar por ID
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
                 
                 std::cout << "\nIngrese el ID a buscar: ";
@@ -171,7 +182,10 @@ int main() {
 
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
 
                 std::cout << "\nPresione 1 para buscar por país";
@@ -224,7 +238,10 @@ int main() {
             case 5: { // Buscar persona más longeva por referencia
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
                 
                 std::cout << "\nPresione 1 para buscar por país";
@@ -277,7 +294,10 @@ int main() {
             case 6: { // Buscar persona más rica por valor
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
                 
                 std::cout << "\nPresione 1 para buscar por país";
@@ -351,7 +371,10 @@ int main() {
             case 7: { // Buscar persona más rica por referencia
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
                 
                 std::cout << "\nPresione 1 para buscar por país";
@@ -425,7 +448,10 @@ int main() {
             case 8: { // Listar por valor las personas de un grupo
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
                 
                 std::string grupo;
@@ -437,7 +463,7 @@ int main() {
                 long memoria_inicio = monitor.obtener_memoria();
                 
                 auto personasGrupoA_valor = listarPersonasPorValorEnGrupo(*personas, grupo);
-                std::cout << "Personas en grupo " << grupo << " por valor: " << personasGrupoA_valor.size() << "\n";
+                std::cout << "\n\nPersonas en grupo " << grupo << " por valor: " << personasGrupoA_valor.size() << "\n";
                 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
@@ -448,7 +474,10 @@ int main() {
             case 9: { // Listar por referencia las personas de un grupo
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
                 }
                 
                 std::string grupo;
@@ -460,23 +489,63 @@ int main() {
                 long memoria_inicio = monitor.obtener_memoria();
                 
                 auto personasGrupoA_ref = listarPersonasPorReferenciaEnGrupo(*personas, grupo);
-                std::cout << "Personas en grupo " << grupo << " por referencia: " << personasGrupoA_ref.size() << "\n";
+                std::cout << "\n\nPersonas en grupo " << grupo << " por referencia: " << personasGrupoA_ref.size() << "\n";
                 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
                 monitor.registrar("Listar por grupo por referencia", tiempo_busqueda, memoria_busqueda);
                 break;
             }
+
+            case 10: { // Verificar grupo por valor
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
+                }
+
+                monitor.iniciar_tiempo();
+                long memoria_inicio = monitor.obtener_memoria();
+
+                verificarGruposMasivoPorValor(*personas);
+
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Verificar grupo por valor", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+
+            case 11: { // Verificar grupo por referencia
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
+                }
+
+                monitor.iniciar_tiempo();
+                long memoria_inicio = monitor.obtener_memoria();
+
+                verificarGruposMasivoPorReferencia(*personas);
+
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Verificar grupo por referencia", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
                 
-            case 10: // Mostrar estadísticas de rendimiento
+            case 12: // Mostrar estadísticas de rendimiento
                 monitor.mostrar_resumen();
                 break;
                 
-            case 11: // Exportar estadísticas a CSV
+            case 13: // Exportar estadísticas a CSV
                 monitor.exportar_csv();
                 break;
                 
-            case 12: // Salir
+            case 14: // Salir
                 std::cout << "Saliendo...\n";
                 break;
                 
@@ -484,7 +553,7 @@ int main() {
                 std::cout << "Opción inválida!\n";
         }
         
-    } while(opcion != 12);
+    } while(opcion != 14);
     
     return 0;
 }

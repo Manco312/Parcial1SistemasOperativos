@@ -348,3 +348,136 @@ std::vector<const Persona*> listarPersonasPorReferenciaEnGrupo(const std::vector
     }
     return filtradas;
 }
+
+/**
+ * Función para calcular el grupo correcto basado en la cédula
+ * 
+ * POR QUÉ: Determinar el grupo de declaración correcto según los últimos dígitos
+ * CÓMO: Extrae los últimos 2 dígitos y aplica las reglas de asignación
+ * PARA QUÉ: Verificar la consistencia de los datos
+ */
+std::string calcularGrupoCorrectoPorCedula(const std::string& cedula) {
+    if (cedula.length() < 2) {
+        throw std::invalid_argument("La cédula debe tener al menos 2 dígitos");
+    }
+    
+    // Extraer los últimos 2 dígitos
+    int ultDigitos = std::stoi(cedula.substr(cedula.length() - 2));
+    
+    // Aplicar las reglas de asignación
+    if (ultDigitos >= 0 && ultDigitos <= 39) {
+        return "A";
+    } else if (ultDigitos >= 40 && ultDigitos <= 79) {
+        return "B";
+    } else { // 80-99
+        return "C";
+    }
+}
+
+/**
+ * Verificación por VALOR - Recibe una copia de la persona
+ * 
+ * POR QUÉ: Verificar si el grupo asignado coincide con el calculado por cédula
+ * CÓMO: Copia la persona, calcula el grupo correcto y compara
+ * PARA QUÉ: Validación de datos sin modificar el original
+ */
+bool verificarGrupoPorValor(Persona persona) {
+    try {
+        std::string grupoCalculado = calcularGrupoCorrectoPorCedula(persona.getId());
+        std::string grupoAsignado = persona.getGrupoDeclaracion();
+        
+        bool esCorrect = (grupoCalculado == grupoAsignado);
+        
+        return esCorrect;
+    } catch (const std::exception& e) {
+        std::cerr << "Error en verificación por valor: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+/**
+ * Verificación por REFERENCIA - Recibe un puntero/referencia a la persona
+ * 
+ * POR QUÉ: Verificar sin copiar el objeto (más eficiente)
+ * CÓMO: Usa referencia constante, calcula el grupo y compara
+ * PARA QUÉ: Validación eficiente para objetos grandes o muchas verificaciones
+ */
+bool verificarGrupoPorReferencia(const Persona& persona) {
+    try {
+        std::string grupoCalculado = calcularGrupoCorrectoPorCedula(persona.getId());
+        std::string grupoAsignado = persona.getGrupoDeclaracion();
+        
+        bool esCorrect = (grupoCalculado == grupoAsignado);
+        
+        return esCorrect;
+    } catch (const std::exception& e) {
+        std::cerr << "Error en verificación por referencia: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+/**
+ * Verificación masiva por VALOR - Verifica toda una colección
+ * 
+ * POR QUÉ: Validar múltiples personas de una vez
+ * CÓMO: Itera sobre copias de las personas y verifica cada una
+ * PARA QUÉ: Auditoría completa de datos
+ */
+void verificarGruposMasivoPorValor(std::vector<Persona> personas) {
+    std::vector<bool> resultados;
+    int correctos = 0;
+    int incorrectos = 0;
+    
+    std::cout << "\n=== VERIFICACIÓN MASIVA POR VALOR ===" << std::endl;
+    
+    for (const auto& persona : personas) {
+        bool resultado = verificarGrupoPorValor(persona);
+        resultados.push_back(resultado);
+        
+        if (resultado) {
+            correctos++;
+        } else {
+            incorrectos++;
+        }
+    }
+    
+    std::cout << "\n--- RESUMEN VERIFICACIÓN MASIVA ---" << std::endl;
+    std::cout << "Total personas verificadas: " << personas.size() << std::endl;
+    std::cout << "Correctos: " << correctos << std::endl;
+    std::cout << "Incorrectos: " << incorrectos << std::endl;
+    std::cout << "Porcentaje de acierto: " << (correctos * 100.0 / personas.size()) << "%" << std::endl;
+    std::cout << "===================================" << std::endl;
+}
+
+/**
+ * Verificación masiva por REFERENCIA - Verifica toda una colección
+ * 
+ * POR QUÉ: Validar múltiples personas eficientemente
+ * CÓMO: Itera sobre referencias a las personas sin copiarlas
+ * PARA QUÉ: Auditoría eficiente de grandes volúmenes de datos
+ */
+void verificarGruposMasivoPorReferencia(const std::vector<Persona>& personas) {
+    std::vector<bool> resultados;
+    int correctos = 0;
+    int incorrectos = 0;
+    
+    std::cout << "\n=== VERIFICACIÓN MASIVA POR REFERENCIA ===" << std::endl;
+    
+    for (const auto& persona : personas) {
+        bool resultado = verificarGrupoPorReferencia(persona);
+        resultados.push_back(resultado);
+        
+        if (resultado) {
+            correctos++;
+        } else {
+            incorrectos++;
+        }
+    }
+    
+    std::cout << "\n--- RESUMEN VERIFICACIÓN MASIVA ---" << std::endl;
+    std::cout << "Total personas verificadas: " << personas.size() << std::endl;
+    std::cout << "Correctos: " << correctos << std::endl;
+    std::cout << "Incorrectos: " << incorrectos << std::endl;
+    std::cout << "Porcentaje de acierto: " << (correctos * 100.0 / personas.size()) << "%" << std::endl;
+    std::cout << "======================================" << std::endl;
+}
