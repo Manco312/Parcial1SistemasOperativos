@@ -481,3 +481,80 @@ void verificarGruposMasivoPorReferencia(const std::vector<Persona>& personas) {
     std::cout << "Porcentaje de acierto: " << (correctos * 100.0 / personas.size()) << "%" << std::endl;
     std::cout << "======================================" << std::endl;
 }
+
+/**
+ * Encuentra el grupo con mayor patrimonio promedio (por valor).
+ * 
+ * POR QUÉ: Determinar qué grupo de declaración tiene mejor situación económica.
+ * CÓMO: Calcula el promedio de patrimonio por grupo y encuentra el máximo.
+ * PARA QUÉ: Análisis estadístico de grupos de declaración.
+ */
+std::string encontrarGrupoMayorPatrimonioPorValor(std::vector<Persona> personas) {
+    
+    std::vector<std::string> grupos = {"A", "B", "C"};
+    std::string grupoMayor;
+    double mayorPromedio = 0.0;
+    std::vector<Persona> filtradas;
+    for (auto grupo : grupos) {
+        for (auto p : personas) {
+            if (p.getGrupoDeclaracion() == grupo) {
+                filtradas.push_back(p);
+            }
+        }
+
+        if (filtradas.empty()) continue;
+        double sumaPatrimonio = 0.0;
+        for (const auto& p : filtradas) {
+            sumaPatrimonio += p.getPatrimonio();
+        }
+        double promedio = sumaPatrimonio / filtradas.size();
+
+        std::cout << "Grupo " << grupo << " - Promedio Patrimonio: " << promedio << std::endl;
+        if (promedio > mayorPromedio) {
+            mayorPromedio = promedio;
+            grupoMayor = grupo;
+        }
+        filtradas.clear();
+    }
+    
+    return grupoMayor;
+}
+
+// Encontrar grupo con mayor patrimonio en promedio por referencia
+
+std::string encontrarGrupoMayorPatrimonioPorReferencia(const std::vector<Persona>& personas) {
+    std::vector<std::string> grupos = {"A", "B", "C"};
+    std::string grupoMayor;
+    double mayorPromedio = 0.0;
+    std::vector<Persona> filtradas;
+
+    for (const auto& grupo : grupos) {
+        for (const auto& p : personas) {
+            if (p.getGrupoDeclaracion() == grupo) {
+                filtradas.push_back(p);
+            }
+        }
+
+        if (filtradas.empty()) continue;
+
+        double sumaPatrimonio = 0.0;
+        for (const auto& p : filtradas) {
+            sumaPatrimonio += p.getPatrimonio();
+        }
+        double promedio = sumaPatrimonio / filtradas.size();
+
+        std::cout << "Grupo " << grupo << " - Promedio Patrimonio: " << promedio << std::endl;
+        if (promedio > mayorPromedio) {
+            mayorPromedio = promedio;
+            grupoMayor = grupo;
+        }
+        filtradas.clear();
+    }
+
+    return grupoMayor;
+}
+
+// Encontrar grupo con mayor longevidad en promedio por valor
+
+// Encontrar grupo con mayor longevidad en promedio por referencia
+
