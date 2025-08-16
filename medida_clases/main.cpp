@@ -120,6 +120,7 @@ int main() {
                 
                 double tiempo_mostrar = monitor.detener_tiempo();
                 long memoria_mostrar = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_mostrar << " ms, Memoria: " << memoria_mostrar << " KB\n";
                 monitor.registrar("Mostrar resumen", tiempo_mostrar, memoria_mostrar);
                 break;
             }
@@ -151,6 +152,7 @@ int main() {
                 
                 double tiempo_detalle = monitor.detener_tiempo();
                 long memoria_detalle = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_detalle << " ms, Memoria: " << memoria_detalle << " KB\n";
                 monitor.registrar("Mostrar detalle", tiempo_detalle, memoria_detalle);
                 break;
             }
@@ -177,6 +179,7 @@ int main() {
                 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Buscar por ID", tiempo_busqueda, memoria_busqueda);
                 break;
             }
@@ -207,6 +210,7 @@ int main() {
                     
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar persona más longeva por valor", tiempo_busqueda, memoria_busqueda);
                     break;
 
@@ -227,6 +231,7 @@ int main() {
                     
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar persona más longeva por valor en ciudad", tiempo_busqueda, memoria_busqueda);
                     break;
                 } else {
@@ -261,6 +266,7 @@ int main() {
                     
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar mas longeva por referencia", tiempo_busqueda, memoria_busqueda);
                     break;
 
@@ -281,6 +287,7 @@ int main() {
                     
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar persona más longeva por referencia en ciudad", tiempo_busqueda, memoria_busqueda);
                     break;
                 } else {
@@ -316,6 +323,7 @@ int main() {
                     
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar mas rica por valor", tiempo_busqueda, memoria_busqueda);
                     break;
 
@@ -336,6 +344,7 @@ int main() {
 
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar persona más rica por valor en ciudad", tiempo_busqueda, memoria_busqueda);
                     break;
                 } else if (opcionBusqueda == 3) {
@@ -355,6 +364,7 @@ int main() {
 
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar persona más rica por valor en grupo", tiempo_busqueda, memoria_busqueda);
                     break;
                 } else {
@@ -390,6 +400,7 @@ int main() {
                     
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar mas rica por referencia", tiempo_busqueda, memoria_busqueda);
                     break;
 
@@ -410,6 +421,7 @@ int main() {
 
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar persona más rica por referencia en ciudad", tiempo_busqueda, memoria_busqueda);
                     break;
                 } else if (opcionBusqueda == 3) {
@@ -429,6 +441,7 @@ int main() {
 
                     double tiempo_busqueda = monitor.detener_tiempo();
                     long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                    std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                     monitor.registrar("Buscar persona más rica por referencia en grupo", tiempo_busqueda, memoria_busqueda);
                     break;
                 } else {
@@ -459,6 +472,7 @@ int main() {
                 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Listar por grupo por valor", tiempo_busqueda, memoria_busqueda);
                 break;
             }
@@ -484,6 +498,7 @@ int main() {
                 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Listar por grupo por referencia", tiempo_busqueda, memoria_busqueda);
                 break;
             }
@@ -503,6 +518,7 @@ int main() {
 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Verificar grupo por valor", tiempo_busqueda, memoria_busqueda);
                 break;
             }
@@ -522,6 +538,7 @@ int main() {
 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Verificar grupo por referencia", tiempo_busqueda, memoria_busqueda);
                 break;
             }
@@ -542,6 +559,7 @@ int main() {
 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Encontrar grupo con mayor patrimonio (valor)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
@@ -562,6 +580,7 @@ int main() {
 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Encontrar grupo con mayor patromonio (referencia)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
@@ -582,6 +601,7 @@ int main() {
 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Encontrar grupo con mayor longevidad (valor)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
@@ -602,6 +622,7 @@ int main() {
 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                std::cout << "Proceso terminado en " << tiempo_busqueda << " ms, Memoria: " << memoria_busqueda << " KB\n";
                 monitor.registrar("Encontrar grupo con mayor longevidad (referencia)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
