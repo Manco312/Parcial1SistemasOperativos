@@ -29,9 +29,11 @@ void mostrarMenu() {
     std::cout << "\n11. Verificar grupos por referencia.";
     std::cout << "\n12. Encontrar grupo con mayor patrimonio en promedio por valor.";
     std::cout << "\n13. Encontrar grupo con mayor patrimonio en promedio por referencia.";
-    std::cout << "\n14. Mostrar estadísticas de rendimiento.";
-    std::cout << "\n15. Exportar estadísticas a CSV.";
-    std::cout << "\n16. Salir.";
+    std::cout << "\n14. Encontrar grupo con mayor longevidad en promedio por valor.";
+    std::cout << "\n15. Encontrar grupo con mayor longevidad en promedio por referencia.";
+    std::cout << "\n16. Mostrar estadísticas de rendimiento.";
+    std::cout << "\n17. Exportar estadísticas a CSV.";
+    std::cout << "\n18. Salir.";
     std::cout << "\nSeleccione una opción: ";
 }
 
@@ -563,16 +565,56 @@ int main() {
                 monitor.registrar("Encontrar grupo con mayor patromonio (referencia)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
+
+            case 14: { // Encontrar grupo con mayor longevidad en promedio por valor
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
+                }
+
+                monitor.iniciar_tiempo();
+
+                std::string grupoMayor = encontrarGrupoMayorLongevidadPorValor(*personas);
+                std::cout << "\nGrupo con mayor longevidad en promedio por valor: " << grupoMayor << "\n";
+
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Encontrar grupo con mayor longevidad (valor)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+
+            case 15: { // Encontrar grupo con mayor longevidad en promedio por referencia
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    std::cout << "Presione Enter para continuar...";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+                    break; // rompe solo el switch
+                }
+
+                monitor.iniciar_tiempo();
+
+                std::string grupoMayor = encontrarGrupoMayorLongevidadPorReferencia(*personas);
+                std::cout << "\nGrupo con mayor longevidad en promedio por referencia: " << grupoMayor << "\n";
+
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Encontrar grupo con mayor longevidad (referencia)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
                 
-            case 14: // Mostrar estadísticas de rendimiento
+            case 16: // Mostrar estadísticas de rendimiento
                 monitor.mostrar_resumen();
                 break;
                 
-            case 15: // Exportar estadísticas a CSV
+            case 17: // Exportar estadísticas a CSV
                 monitor.exportar_csv();
                 break;
                 
-            case 16: // Salir
+            case 18: // Salir
                 std::cout << "Saliendo...\n";
                 break;
                 
@@ -580,7 +622,7 @@ int main() {
                 std::cout << "Opción inválida!\n";
         }
         
-    } while(opcion != 16);
+    } while(opcion != 18);
     
     return 0;
 }

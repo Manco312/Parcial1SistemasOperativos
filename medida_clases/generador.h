@@ -91,4 +91,7 @@ void verificarGruposMasivoPorReferencia(const std::vector<Persona>& personas);
 std::string encontrarGrupoMayorPatrimonioPorValor(std::vector<Persona> personas);
 std::string encontrarGrupoMayorPatrimonioPorReferencia(const std::vector<Persona>& personas);
 
+std::string encontrarGrupoMayorLongevidadPorValor(std::vector<Persona> personas);
+std::string encontrarGrupoMayorLongevidadPorReferencia(const std::vector<Persona>& personas);
+
 #endif // GENERADOR_H

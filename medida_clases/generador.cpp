@@ -555,6 +555,67 @@ std::string encontrarGrupoMayorPatrimonioPorReferencia(const std::vector<Persona
 }
 
 // Encontrar grupo con mayor longevidad en promedio por valor
+std::string encontrarGrupoMayorLongevidadPorValor(std::vector<Persona> personas) {
+    
+    std::vector<std::string> grupos = {"A", "B", "C"};
+    std::string grupoMayor;
+    double mayorPromedio = 0.0;
+    std::vector<Persona> filtradas;
+    for (auto grupo : grupos) {
+        for (auto p : personas) {
+            if (p.getGrupoDeclaracion() == grupo) {
+                filtradas.push_back(p);
+            }
+        }
+
+        if (filtradas.empty()) continue;
+        double sumaEdad = 0.0;
+        for (auto p : filtradas) {
+            sumaEdad += p.getEdad();
+        }
+        double promedio = sumaEdad / filtradas.size();
+
+        std::cout << "Grupo " << grupo << " - Promedio Edad: " << promedio << std::endl;
+        if (promedio > mayorPromedio) {
+            mayorPromedio = promedio;
+            grupoMayor = grupo;
+        }
+        filtradas.clear();
+    }
+    
+    return grupoMayor;
+}
 
 // Encontrar grupo con mayor longevidad en promedio por referencia
 
+std::string encontrarGrupoMayorLongevidadPorReferencia(const std::vector<Persona>& personas) {
+    std::vector<std::string> grupos = {"A", "B", "C"};
+    std::string grupoMayor;
+    double mayorPromedio = 0.0;
+    std::vector<Persona> filtradas;
+
+    for (const auto& grupo : grupos) {
+        for (const auto& p : personas) {
+            if (p.getGrupoDeclaracion() == grupo) {
+                filtradas.push_back(p);
+            }
+        }
+
+        if (filtradas.empty()) continue;
+
+        double sumaEdad = 0.0;
+        for (const auto& p : filtradas) {
+            sumaEdad += p.getEdad();
+        }
+        double promedio = sumaEdad / filtradas.size();
+
+        std::cout << "Grupo " << grupo << " - Promedio Edad: " << promedio << std::endl;
+        if (promedio > mayorPromedio) {
+            mayorPromedio = promedio;
+            grupoMayor = grupo;
+        }
+        filtradas.clear();
+    }
+
+    return grupoMayor;
+}
