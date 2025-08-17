@@ -53,10 +53,18 @@ int main() {
     
     Monitor monitor; // Monitor para medir rendimiento
     
+    std::string opcionString;
     int opcion;
     do {
         mostrarMenu();
-        std::cin >> opcion;
+        std::cin >> opcionString;
+
+        try {
+            opcion = std::stoi(opcionString);
+        } catch (const std::invalid_argument&) {
+            std::cout << "Entrada inválida. Por favor, ingrese un número.\n";
+            continue; // Vuelve a mostrar el menú
+        }
         
         // Variables locales para uso en los casos
         size_t tam = 0;
