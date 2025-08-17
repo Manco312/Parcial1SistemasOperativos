@@ -14,8 +14,8 @@ void mostrarMenu() {
     std::cout << "\n3. Buscar persona por ID.";
     std::cout << "\n4. Buscar persona mas longeva por valor.";
     std::cout << "\n5. Buscar persona mas longeva por referencia.";
-    std::cout << "\n6. Buscar persona con mas patrimonio por valor en ciudad.";
-    std::cout << "\n7. Buscar persona con mas patrimonio por referencia en ciudad.";
+    std::cout << "\n6. Buscar persona con mas patrimonio por valor.";
+    std::cout << "\n7. Buscar persona con mas patrimonio por referencia.";
     std::cout << "\n8. Listar personas por grupo (A, B o C) por valor.";
     std::cout << "\n9. Listar personas por grupo (A, B o C) por referencia.";
     std::cout << "\n10. Verificar grupos por valor.";
