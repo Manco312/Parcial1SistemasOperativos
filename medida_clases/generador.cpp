@@ -5,45 +5,68 @@
 #include <vector>
 #include <algorithm> // std::find_if
 
-// Bases de datos para generación realista
+// ========================================================================
+// BASES DE DATOS PARA GENERACIÓN REALISTA DE PERSONAS COLOMBIANAS
+// ========================================================================
+// Estas bases de datos contienen nombres, apellidos y ciudades comunes
+// en Colombia para generar datos realistas y representativos del país.
 
-// Nombres femeninos comunes en Colombia
+// Nombres femeninos más populares en Colombia según registros civiles
 const std::vector<std::string> nombresFemeninos = {
     "María", "Luisa", "Carmen", "Ana", "Sofía", "Isabel", "Laura", "Andrea", "Paula", "Valentina",
     "Camila", "Daniela", "Carolina", "Fernanda", "Gabriela", "Patricia", "Claudia", "Diana", "Lucía", "Ximena"
 };
 
-// Nombres masculinos comunes en Colombia
+// Nombres masculinos más populares en Colombia según registros civiles
 const std::vector<std::string> nombresMasculinos = {
     "Juan", "Carlos", "José", "James", "Andrés", "Miguel", "Luis", "Pedro", "Alejandro", "Ricardo",
     "Felipe", "David", "Jorge", "Santiago", "Daniel", "Fernando", "Diego", "Rafael", "Martín", "Óscar",
     "Edison", "Nestor", "Gertridis"
 };
 
-// Apellidos comunes en Colombia
+// Apellidos más comunes en Colombia basados en estadísticas del DANE
 const std::vector<std::string> apellidos = {
     "Gómez", "Rodríguez", "Martínez", "López", "García", "Pérez", "González", "Sánchez", "Ramírez", "Torres",
     "Díaz", "Vargas", "Castro", "Ruiz", "Álvarez", "Romero", "Suárez", "Rojas", "Moreno", "Muñoz", "Valencia",
 };
 
-// Principales ciudades colombianas
+// Principales ciudades colombianas ordenadas por población e importancia económica
 const std::vector<std::string> ciudadesColombia = {
     "Bogotá", "Medellín", "Cali", "Barranquilla", "Cartagena", "Bucaramanga", "Pereira", "Santa Marta", "Cúcuta", "Ibagué",
     "Manizales", "Pasto", "Neiva", "Villavicencio", "Armenia", "Sincelejo", "Valledupar", "Montería", "Popayán", "Tunja"
 };
 
+// ========================================================================
+// FUNCIONES DE VALIDACIÓN Y UTILIDAD
+// ========================================================================
 
+/**
+ * Valida si una ciudad pertenece al conjunto de ciudades colombianas válidas.
+ * 
+ * @param ciudad Nombre de la ciudad a validar
+ * @return true si la ciudad es válida, false en caso contrario
+ * 
+ * COMPLEJIDAD: O(n) donde n es el número de ciudades
+ * USO: Validación de entrada en formularios y APIs
+ */
 bool ciudadValida(const std::string& ciudad) {
     return std::find(ciudadesColombia.begin(), ciudadesColombia.end(), ciudad) != ciudadesColombia.end();
 }
 
+// ========================================================================
+// GENERADORES DE DATOS ALEATORIOS
+// ========================================================================
 
 /**
- * Implementación de generarFechaNacimiento.
+ * Genera una fecha de nacimiento aleatoria en formato DD/MM/AAAA.
  * 
- * POR QUÉ: Simular fechas de nacimiento realistas.
- * CÓMO: Día (1-28), mes (1-12), año (1960-2009).
- * PARA QUÉ: Atributo fechaNacimiento de Persona.
+ * RANGO DE AÑOS: 1960-2009 (personas entre 16-65 años aproximadamente)
+ * RANGO DE DÍAS: 1-28 (evita problemas con meses de febrero)
+ * RANGO DE MESES: 1-12 (enero a diciembre)
+ * 
+ * @return String con fecha en formato "DD/MM/AAAA"
+ * 
+ * NOTA: Usa rand() simple, adecuado para datos de prueba no criptográficos
  */
 std::string generarFechaNacimiento() {
     int dia = 1 + rand() % 28;       // Día: 1 a 28 (evita problemas con meses)
@@ -53,11 +76,16 @@ std::string generarFechaNacimiento() {
 }
 
 /**
- * Implementación de generarID.
+ * Genera un ID único secuencial simulando números de cédula colombiana.
  * 
- * POR QUÉ: Generar identificadores únicos y secuenciales.
- * CÓMO: Contador estático que inicia en 1000000000 y se incrementa.
- * PARA QUÉ: Simular números de cédula.
+ * CARACTERÍSTICAS:
+ * - Inicia en 1,000,000,000 (formato realista de cédula)
+ * - Incremento secuencial garantiza unicidad
+ * - Variable estática mantiene estado entre llamadas
+ * 
+ * @return String con el ID generado
+ * 
+ * THREAD-SAFETY: No es thread-safe debido a la variable estática
  */
 std::string generarID() {
     static long contador = 1000000000; // Inicia en 1,000,000,000
@@ -65,11 +93,18 @@ std::string generarID() {
 }
 
 /**
- * Implementación de randomDouble.
+ * Genera números decimales aleatorios de alta calidad en un rango específico.
  * 
- * POR QUÉ: Generar números decimales aleatorios en un rango.
- * CÓMO: Mersenne Twister (mejor que rand()) y distribución uniforme.
- * PARA QUÉ: Valores de ingresos, patrimonio, etc.
+ * VENTAJAS SOBRE rand():
+ * - Mersenne Twister: mejor distribución estadística
+ * - Distribución uniforme real: no sesgos
+ * - Semilla basada en tiempo: mejor aleatoriedad
+ * 
+ * @param min Valor mínimo (inclusivo)
+ * @param max Valor máximo (inclusivo)
+ * @return Número decimal aleatorio en el rango [min, max]
+ * 
+ * USO: Valores monetarios, porcentajes, mediciones precisas
  */
 double randomDouble(double min, double max) {
     static std::mt19937 generator(time(nullptr)); // Semilla basada en tiempo
@@ -77,62 +112,93 @@ double randomDouble(double min, double max) {
     return distribution(generator);
 }
 
+// ========================================================================
+// GENERACIÓN DE PERSONAS Y COLECCIONES
+// ========================================================================
+
 /**
- * Implementación de generarPersona.
+ * Genera una persona completa con datos aleatorios pero realistas.
  * 
- * POR QUÉ: Crear una persona con datos aleatorios.
- * CÓMO: Seleccionando aleatoriamente de las bases de datos y generando números.
- * PARA QUÉ: Generar datos de prueba.
+ * PROCESO DE GENERACIÓN:
+ * 1. Determina género aleatoriamente (50/50)
+ * 2. Selecciona nombre según género de las bases de datos
+ * 3. Construye apellido compuesto (dos apellidos aleatorios)
+ * 4. Genera ID secuencial único
+ * 5. Asigna ciudad aleatoria de Colombia
+ * 6. Calcula grupo de declaración basado en últimos 2 dígitos del ID
+ * 7. Genera datos financieros realistas con correlaciones lógicas
+ * 
+ * LÓGICA DE GRUPOS:
+ * - Grupo A: ID termina en 00-39 (40% de la población)
+ * - Grupo B: ID termina en 40-79 (40% de la población)  
+ * - Grupo C: ID termina en 80-99 (20% de la población)
+ * 
+ * DATOS FINANCIEROS REALISTAS:
+ * - Ingresos: 10M-500M COP (rango clase media-alta colombiana)
+ * - Patrimonio: 0-2,000M COP (incluye desde sin patrimonio hasta muy ricos)
+ * - Deudas: máximo 70% del patrimonio (límite realista de endeudamiento)
+ * - Declarante: 70% probabilidad si ingresos > 50M COP
+ * 
+ * @return Objeto Persona completamente inicializado
  */
 Persona generarPersona() {
-    // Decide si es hombre o mujer
+    // Decide si es hombre o mujer (50% probabilidad cada uno)
     bool esHombre = rand() % 2;
     
-    // Selecciona nombre según género
+    // Selecciona nombre según género de las bases de datos correspondientes
     std::string nombre = esHombre ? 
         nombresMasculinos[rand() % nombresMasculinos.size()] :
         nombresFemeninos[rand() % nombresFemeninos.size()];
     
-    // Construye apellido compuesto (dos apellidos aleatorios)
+    // Construye apellido compuesto (tradición colombiana de dos apellidos)
     std::string apellido = apellidos[rand() % apellidos.size()];
     apellido += " ";
     apellido += apellidos[rand() % apellidos.size()];
     
-    // Genera los demás atributos
+    // Genera identificación y ubicación
     std::string id = generarID();
     std::string ciudad = ciudadesColombia[rand() % ciudadesColombia.size()];
     std::string fecha = generarFechaNacimiento();
 
-    // Generar grupo en base a los dos últimos digitos del id (convertirlo a int)
+    // Calcula grupo de declaración basado en los últimos 2 dígitos del ID
     int ultDigitos = std::stoi(id.substr(id.length() - 2));
     std::string grupo;
 
-    // Asigna el grupo de declaración basado en el grupo
+    // Asigna el grupo según las reglas establecidas
     if (ultDigitos >= 0 && ultDigitos <= 39) {
-        grupo = "A";
+        grupo = "A";        // 40% de la población
     } else if (ultDigitos >= 40 && ultDigitos <= 79) {
-        grupo = "B";
+        grupo = "B";        // 40% de la población
     } else {
-        grupo = "C";
+        grupo = "C";        // 20% de la población
     }
 
-    int edad = 2025 - std::stoi(fecha.substr(fecha.find_last_of('/') + 1)); // Calcula edad aproximada
+    // Calcula edad aproximada basada en el año de nacimiento
+    int edad = 2025 - std::stoi(fecha.substr(fecha.find_last_of('/') + 1));
 
-    // Genera datos financieros realistas
+    // Genera datos financieros con correlaciones realistas
     double ingresos = randomDouble(10000000, 500000000);   // 10M a 500M COP
     double patrimonio = randomDouble(0, 2000000000);       // 0 a 2,000M COP
     double deudas = randomDouble(0, patrimonio * 0.7);     // Deudas hasta el 70% del patrimonio
-    bool declarante = (ingresos > 50000000) && (rand() % 100 > 30); // Probabilidad 70% si ingresos > 50M
+    
+    // Lógica de declarante: mayor probabilidad si ingresos altos
+    bool declarante = (ingresos > 50000000) && (rand() % 100 > 30); // 70% probabilidad si ingresos > 50M
     
     return Persona(nombre, apellido, id, ciudad, fecha, grupo, edad, ingresos, patrimonio, deudas, declarante);
 }
 
 /**
- * Implementación de generarColeccion.
+ * Genera una colección de n personas con optimización de memoria.
  * 
- * POR QUÉ: Generar un conjunto de n personas.
- * CÓMO: Reservando espacio y agregando n personas generadas.
- * PARA QUÉ: Crear datasets para pruebas.
+ * OPTIMIZACIONES:
+ * - reserve(n): pre-asigna memoria para evitar realocaciones
+ * - push_back: construcción eficiente de objetos
+ * 
+ * @param n Número de personas a generar
+ * @return Vector con n personas generadas aleatoriamente
+ * 
+ * COMPLEJIDAD: O(n) tiempo, O(n) espacio
+ * USO: Creación de datasets para pruebas, simulaciones, benchmarks
  */
 std::vector<Persona> generarColeccion(int n) {
     std::vector<Persona> personas;
@@ -145,15 +211,28 @@ std::vector<Persona> generarColeccion(int n) {
     return personas;
 }
 
+// ========================================================================
+// FUNCIONES DE BÚSQUEDA Y CONSULTA
+// ========================================================================
+
 /**
- * Implementación de buscarPorID.
+ * Busca una persona por su ID en una colección usando búsqueda lineal.
  * 
- * POR QUÉ: Encontrar una persona por su ID en una colección.
- * CÓMO: Usando un algoritmo de búsqueda secuencial (lineal).
- * PARA QUÉ: Para operaciones de búsqueda en la aplicación.
+ * ALGORITMO: Búsqueda secuencial con lambda y find_if
+ * COMPLEJIDAD: O(n) en el peor caso
+ * RETORNO: Puntero a la persona encontrada o nullptr si no existe
+ * 
+ * @param personas Vector de personas donde buscar
+ * @param id ID de la persona a buscar
+ * @return Puntero constante a la persona encontrada o nullptr
+ * 
+ * VENTAJAS:
+ * - Retorna puntero: evita copias innecesarias
+ * - Const correctness: no modifica los datos
+ * - nullptr: indicador claro de "no encontrado"
  */
 const Persona* buscarPorID(const std::vector<Persona>& personas, const std::string& id) {
-    // Usa find_if con una lambda para buscar por ID
+    // Usa find_if con lambda para búsqueda eficiente
     auto it = std::find_if(personas.begin(), personas.end(),
         [&id](const Persona& p) { return p.getId() == id; });
     
@@ -164,16 +243,48 @@ const Persona* buscarPorID(const std::vector<Persona>& personas, const std::stri
     }
 }
 
-// --- Versión por valor ---
+// ========================================================================
+// BÚSQUEDAS DE PERSONA MÁS LONGEVA
+// ========================================================================
+
+/**
+ * Busca la persona más longeva (VERSIÓN POR VALOR).
+ * 
+ * CARACTERÍSTICAS:
+ * - Recibe vector por valor (copia completa)
+ * - Retorna objeto Persona (copia del resultado)
+ * - Usa max_element con lambda comparador
+ * 
+ * VENTAJAS: Datos inmutables, thread-safe
+ * DESVENTAJAS: Alto costo de memoria (2 copias completas)
+ * 
+ * @param personas Vector de personas (copiado)
+ * @return Persona más longeva (copia)
+ * 
+ * COMPLEJIDAD: O(n) tiempo, O(n) espacio adicional
+ */
 Persona buscarMasLongevoPorValor(std::vector<Persona> personas) {
     return *std::max_element(personas.begin(), personas.end(),
         [](const Persona& a, const Persona& b) { return a.getEdad() < b.getEdad(); });
 }
 
-
-// --- Versión por referencia ---
+/**
+ * Busca la persona más longeva (VERSIÓN POR REFERENCIA).
+ * 
+ * CARACTERÍSTICAS:
+ * - Recibe vector por referencia constante (sin copia)
+ * - Retorna puntero constante (sin copia del resultado)
+ * - Validación de vector vacío
+ * 
+ * VENTAJAS: Eficiente en memoria, rápido
+ * DESVENTAJAS: Puntero puede invalidarse si vector se modifica
+ * 
+ * @param personas Vector de personas (referencia constante)
+ * @return Puntero a la persona más longeva o nullptr si vacío
+ * 
+ * COMPLEJIDAD: O(n) tiempo, O(1) espacio adicional
+ */
 const Persona* buscarMasLongevoPorReferencia(const std::vector<Persona>& personas) {
-
     if (personas.empty()) return nullptr;
 
     auto it = std::max_element(personas.begin(), personas.end(),
@@ -182,7 +293,21 @@ const Persona* buscarMasLongevoPorReferencia(const std::vector<Persona>& persona
     return &(*it);
 }
 
-// --- Versión por valor en ciudad ---
+/**
+ * Busca la persona más longeva en una ciudad específica (VERSIÓN POR VALOR).
+ * 
+ * PROCESO:
+ * 1. Filtra personas de la ciudad especificada
+ * 2. Valida que existan personas en esa ciudad
+ * 3. Busca el más longevo entre los filtrados
+ * 
+ * @param personas Vector de personas (copiado)
+ * @param ciudad Ciudad donde buscar
+ * @return Persona más longeva de la ciudad
+ * @throws std::runtime_error si no hay personas en la ciudad
+ * 
+ * COMPLEJIDAD: O(n) tiempo, O(k) espacio donde k = personas en la ciudad
+ */
 Persona buscarMasLongevoPorValorEnCiudad(std::vector<Persona> personas, const std::string& ciudad) {
     // Filtrar solo personas de la ciudad especificada
     std::vector<Persona> filtradas;
@@ -201,9 +326,20 @@ Persona buscarMasLongevoPorValorEnCiudad(std::vector<Persona> personas, const st
         [](const Persona& a, const Persona& b) { return a.getEdad() < b.getEdad(); });
 }
 
-// --- Versión por referencia en ciudad ---
+/**
+ * Busca la persona más longeva en una ciudad específica (VERSIÓN POR REFERENCIA).
+ * 
+ * OPTIMIZACIÓN: Usa vector de punteros para evitar copiar objetos Persona
+ * 
+ * @param personas Vector de personas (referencia constante)
+ * @param ciudad Ciudad donde buscar
+ * @return Puntero a la persona más longeva de la ciudad
+ * @throws std::runtime_error si no hay personas en la ciudad
+ * 
+ * VENTAJA: Más eficiente en memoria que la versión por valor
+ */
 const Persona* buscarMasLongevoPorReferenciaEnCiudad(const std::vector<Persona>& personas, const std::string& ciudad) {
-    // Filtrar solo personas de la ciudad especificada
+    // Filtrar usando punteros para mayor eficiencia
     std::vector<const Persona*> filtradas;
     for (const auto& p : personas) {
         if (p.getCiudadNacimiento() == ciudad) {
@@ -215,20 +351,29 @@ const Persona* buscarMasLongevoPorReferenciaEnCiudad(const std::vector<Persona>&
         throw std::runtime_error("No hay personas registradas en la ciudad: " + ciudad);
     }
 
-    // Buscar el más longevo en las filtradas
+    // Buscar el más longevo usando comparación de punteros
     return *std::max_element(filtradas.begin(), filtradas.end(),
         [](const Persona* a, const Persona* b) { return a->getEdad() < b->getEdad(); });
 }
 
-// --- Versión por valor ---
+// ========================================================================
+// BÚSQUEDAS DE PERSONA CON MAYOR PATRIMONIO
+// ========================================================================
+
+/**
+ * Busca la persona con mayor patrimonio (VERSIÓN POR VALOR).
+ * Similar a buscarMasLongevoPorValor pero comparando patrimonio.
+ */
 Persona buscarMasPatrimonioPorValor(std::vector<Persona> personas) {
     return *std::max_element(personas.begin(), personas.end(),
         [](const Persona& a, const Persona& b) { return a.getPatrimonio() < b.getPatrimonio(); });
 }
 
-// --- Versión por referencia ---
+/**
+ * Busca la persona con mayor patrimonio (VERSIÓN POR REFERENCIA).
+ * Versión eficiente que evita copias de memoria.
+ */
 const Persona* buscarMasPatrimonioPorReferencia(const std::vector<Persona>& personas) {
-
     if (personas.empty()) return nullptr;
 
     auto it = std::max_element(personas.begin(), personas.end(),
@@ -237,7 +382,21 @@ const Persona* buscarMasPatrimonioPorReferencia(const std::vector<Persona>& pers
     return &(*it);
 }
 
-// --- Versión por valor en ciudad ---
+/**
+ * Busca la persona con mayor patrimonio en una ciudad específica (VERSIÓN POR VALOR).
+ * 
+ * PROCESO:
+ * 1. Filtra personas de la ciudad especificada
+ * 2. Valida que existan personas en esa ciudad
+ * 3. Busca el más rico entre los filtrados
+ * 
+ * @param personas Vector de personas (copiado)
+ * @param ciudad Ciudad donde buscar
+ * @return Persona más rica de la ciudad
+ * @throws std::runtime_error si no hay personas en la ciudad
+ * 
+ * COMPLEJIDAD: O(n) tiempo, O(k) espacio donde k = personas en la ciudad
+ */
 Persona buscarMasPatrimonioPorValorEnCiudad(std::vector<Persona> personas, const std::string& ciudad) {
     // Filtrar solo personas de la ciudad especificada
     std::vector<Persona> filtradas;
@@ -256,9 +415,20 @@ Persona buscarMasPatrimonioPorValorEnCiudad(std::vector<Persona> personas, const
         [](const Persona& a, const Persona& b) { return a.getPatrimonio() < b.getPatrimonio(); });
 }
 
-// --- Versión por referencia en ciudad ---
+/**
+ * Busca la persona con mayor patrimonio en una ciudad específica (VERSIÓN POR REFERENCIA).
+ * 
+ * OPTIMIZACIÓN: Usa vector de punteros para evitar copiar objetos Persona
+ * 
+ * @param personas Vector de personas (referencia constante)
+ * @param ciudad Ciudad donde buscar
+ * @return Puntero a la persona más rica de la ciudad
+ * @throws std::runtime_error si no hay personas en la ciudad
+ * 
+ * VENTAJA: Más eficiente en memoria que la versión por valor
+ */
 const Persona* buscarMasPatrimonioPorReferenciaEnCiudad(const std::vector<Persona>& personas, const std::string& ciudad) {
-    // Filtrar solo personas de la ciudad especificada
+    // Filtrar usando punteros para mayor eficiencia
     std::vector<const Persona*> filtradas;
     for (const auto& p : personas) {
         if (p.getCiudadNacimiento() == ciudad) {
@@ -270,12 +440,26 @@ const Persona* buscarMasPatrimonioPorReferenciaEnCiudad(const std::vector<Person
         throw std::runtime_error("No hay personas registradas en la ciudad: " + ciudad);
     }
 
-    // Buscar el más rico en las filtradas
+    // Buscar el más rico usando comparación de punteros
     return *std::max_element(filtradas.begin(), filtradas.end(),
         [](const Persona* a, const Persona* b) { return a->getPatrimonio() < b->getPatrimonio(); });
 }
 
-// --- Versión por valor en ciudad ---
+/**
+ * Busca la persona con mayor patrimonio en un grupo específico (VERSIÓN POR VALOR).
+ * 
+ * PROCESO:
+ * 1. Filtra personas del grupo especificado
+ * 2. Valida que existan personas en ese grupo
+ * 3. Busca el más rico entre los filtrados
+ * 
+ * @param personas Vector de personas (copiado)
+ * @param grupo Grupo de declaración donde buscar
+ * @return Persona más rica del grupo
+ * @throws std::runtime_error si no hay personas en el grupo
+ * 
+ * COMPLEJIDAD: O(n) tiempo, O(k) espacio donde k = personas en el grupo
+ */
 Persona buscarMasPatrimonioPorValorEnGrupo(std::vector<Persona> personas, const std::string& grupo) {
     // Filtrar solo personas del grupo especificado
     std::vector<Persona> filtradas;
@@ -294,9 +478,20 @@ Persona buscarMasPatrimonioPorValorEnGrupo(std::vector<Persona> personas, const 
         [](const Persona& a, const Persona& b) { return a.getPatrimonio() < b.getPatrimonio(); });
 }
 
-// --- Versión por referencia en grupo ---
+/**
+ * Busca la persona con mayor patrimonio en un grupo específico (VERSIÓN POR REFERENCIA).
+ * 
+ * OPTIMIZACIÓN: Usa vector de punteros para evitar copiar objetos Persona
+ * 
+ * @param personas Vector de personas (referencia constante)
+ * @param grupo Grupo de declaración donde buscar
+ * @return Puntero a la persona más rica del grupo
+ * @throws std::runtime_error si no hay personas en el grupo
+ * 
+ * VENTAJA: Más eficiente en memoria que la versión por valor
+ */
 const Persona* buscarMasPatrimonioPorReferenciaEnGrupo(const std::vector<Persona>& personas, const std::string& grupo) {
-    // Filtrar solo personas del grupo especificado
+    // Filtrar usando punteros para mayor eficiencia
     std::vector<const Persona*> filtradas;
     for (const auto& p : personas) {
         if (p.getGrupoDeclaracion() == grupo) {
@@ -308,7 +503,7 @@ const Persona* buscarMasPatrimonioPorReferenciaEnGrupo(const std::vector<Persona
         throw std::runtime_error("No hay personas registradas en el grupo: " + grupo);
     }
 
-    // Buscar el más rico en las filtradas
+    // Buscar el más rico usando comparación de punteros
     return *std::max_element(filtradas.begin(), filtradas.end(),
         [](const Persona* a, const Persona* b) { return a->getPatrimonio() < b->getPatrimonio(); });
 }
@@ -349,12 +544,23 @@ std::vector<const Persona*> listarPersonasPorReferenciaEnGrupo(const std::vector
     return filtradas;
 }
 
+// ========================================================================
+// FUNCIONES DE ANÁLISIS Y ESTADÍSTICAS
+// ========================================================================
+
 /**
- * Función para calcular el grupo correcto basado en la cédula
+ * Calcula el grupo de declaración correcto basado en los últimos dígitos de la cédula.
  * 
- * POR QUÉ: Determinar el grupo de declaración correcto según los últimos dígitos
- * CÓMO: Extrae los últimos 2 dígitos y aplica las reglas de asignación
- * PARA QUÉ: Verificar la consistencia de los datos
+ * REGLAS DE ASIGNACIÓN:
+ * - Últimos 2 dígitos 00-39: Grupo A (40% población)
+ * - Últimos 2 dígitos 40-79: Grupo B (40% población)
+ * - Últimos 2 dígitos 80-99: Grupo C (20% población)
+ * 
+ * @param cedula Número de cédula como string
+ * @return Grupo calculado ("A", "B", o "C")
+ * @throws std::invalid_argument si la cédula tiene menos de 2 dígitos
+ * 
+ * USO: Verificación de consistencia de datos, auditorías
  */
 std::string calcularGrupoCorrectoPorCedula(const std::string& cedula) {
     if (cedula.length() < 2) {
@@ -374,12 +580,24 @@ std::string calcularGrupoCorrectoPorCedula(const std::string& cedula) {
     }
 }
 
+// ========================================================================
+// FUNCIONES DE VERIFICACIÓN DE INTEGRIDAD
+// ========================================================================
+
 /**
- * Verificación por VALOR - Recibe una copia de la persona
+ * Verifica si el grupo asignado coincide con el calculado (VERSIÓN POR VALOR).
  * 
- * POR QUÉ: Verificar si el grupo asignado coincide con el calculado por cédula
- * CÓMO: Copia la persona, calcula el grupo correcto y compara
- * PARA QUÉ: Validación de datos sin modificar el original
+ * PROCESO:
+ * 1. Recibe copia de la persona (inmutable)
+ * 2. Calcula grupo correcto basado en cédula
+ * 3. Compara con grupo asignado
+ * 4. Maneja excepciones de forma segura
+ * 
+ * @param persona Persona a verificar (copia)
+ * @return true si el grupo es correcto, false en caso contrario
+ * 
+ * VENTAJAS: Thread-safe, no afecta datos originales
+ * DESVENTAJAS: Costo de copia del objeto
  */
 bool verificarGrupoPorValor(Persona persona) {
     try {
@@ -396,11 +614,15 @@ bool verificarGrupoPorValor(Persona persona) {
 }
 
 /**
- * Verificación por REFERENCIA - Recibe un puntero/referencia a la persona
+ * Verifica si el grupo asignado coincide con el calculado (VERSIÓN POR REFERENCIA).
  * 
- * POR QUÉ: Verificar sin copiar el objeto (más eficiente)
- * CÓMO: Usa referencia constante, calcula el grupo y compara
- * PARA QUÉ: Validación eficiente para objetos grandes o muchas verificaciones
+ * OPTIMIZACIÓN: Usa referencia constante para evitar copia del objeto.
+ * Ideal para verificaciones masivas o objetos grandes.
+ * 
+ * @param persona Referencia constante a la persona
+ * @return true si el grupo es correcto, false en caso contrario
+ * 
+ * COMPLEJIDAD: O(1) tiempo, O(1) espacio adicional
  */
 bool verificarGrupoPorReferencia(const Persona& persona) {
     try {
@@ -416,12 +638,22 @@ bool verificarGrupoPorReferencia(const Persona& persona) {
     }
 }
 
+// ========================================================================
+// FUNCIONES DE AUDITORÍA MASIVA
+// ========================================================================
+
 /**
- * Verificación masiva por VALOR - Verifica toda una colección
+ * Realiza verificación masiva de grupos en toda una colección (POR VALOR).
  * 
- * POR QUÉ: Validar múltiples personas de una vez
- * CÓMO: Itera sobre copias de las personas y verifica cada una
- * PARA QUÉ: Auditoría completa de datos
+ * CARACTERÍSTICAS:
+ * - Procesa cada persona individualmente
+ * - Genera estadísticas completas de verificación
+ * - Muestra resumen detallado con porcentajes
+ * 
+ * @param personas Vector de personas a verificar (copiado)
+ * 
+ * SALIDA: Imprime estadísticas detalladas en consola
+ * USO: Auditorías de calidad de datos, validación de sistemas
  */
 void verificarGruposMasivoPorValor(std::vector<Persona> personas) {
     std::vector<bool> resultados;
@@ -450,11 +682,14 @@ void verificarGruposMasivoPorValor(std::vector<Persona> personas) {
 }
 
 /**
- * Verificación masiva por REFERENCIA - Verifica toda una colección
+ * Realiza verificación masiva de grupos en toda una colección (POR REFERENCIA).
  * 
- * POR QUÉ: Validar múltiples personas eficientemente
- * CÓMO: Itera sobre referencias a las personas sin copiarlas
- * PARA QUÉ: Auditoría eficiente de grandes volúmenes de datos
+ * OPTIMIZACIÓN: Versión eficiente para grandes volúmenes de datos.
+ * Misma funcionalidad que la versión por valor pero sin copias costosas.
+ * 
+ * @param personas Vector de personas (referencia constante)
+ * 
+ * VENTAJA: Significativamente más rápido para datasets grandes
  */
 void verificarGruposMasivoPorReferencia(const std::vector<Persona>& personas) {
     std::vector<bool> resultados;
@@ -482,12 +717,24 @@ void verificarGruposMasivoPorReferencia(const std::vector<Persona>& personas) {
     std::cout << "======================================" << std::endl;
 }
 
+// ========================================================================
+// ANÁLISIS ESTADÍSTICO POR GRUPOS
+// ========================================================================
+
 /**
- * Encuentra el grupo con mayor patrimonio promedio (por valor).
+ * Encuentra el grupo con mayor patrimonio promedio (VERSIÓN POR VALOR).
  * 
- * POR QUÉ: Determinar qué grupo de declaración tiene mejor situación económica.
- * CÓMO: Calcula el promedio de patrimonio por grupo y encuentra el máximo.
- * PARA QUÉ: Análisis estadístico de grupos de declaración.
+ * ALGORITMO:
+ * 1. Itera sobre cada grupo (A, B, C)
+ * 2. Filtra personas de cada grupo
+ * 3. Calcula promedio de patrimonio
+ * 4. Determina el grupo con mayor promedio
+ * 
+ * @param personas Vector de personas (copiado)
+ * @return String con el grupo que tiene mayor patrimonio promedio
+ * 
+ * SALIDA: Imprime promedios de cada grupo para análisis
+ * USO: Análisis socioeconómico, segmentación de mercado
  */
 std::string encontrarGrupoMayorPatrimonioPorValor(std::vector<Persona> personas) {
     
@@ -495,7 +742,9 @@ std::string encontrarGrupoMayorPatrimonioPorValor(std::vector<Persona> personas)
     std::string grupoMayor;
     double mayorPromedio = 0.0;
     std::vector<Persona> filtradas;
+    
     for (auto grupo : grupos) {
+        // Filtrar personas del grupo actual
         for (auto p : personas) {
             if (p.getGrupoDeclaracion() == grupo) {
                 filtradas.push_back(p);
@@ -503,6 +752,8 @@ std::string encontrarGrupoMayorPatrimonioPorValor(std::vector<Persona> personas)
         }
 
         if (filtradas.empty()) continue;
+        
+        // Calcular promedio de patrimonio del grupo
         double sumaPatrimonio = 0.0;
         for (const auto& p : filtradas) {
             sumaPatrimonio += p.getPatrimonio();
@@ -510,6 +761,8 @@ std::string encontrarGrupoMayorPatrimonioPorValor(std::vector<Persona> personas)
         double promedio = sumaPatrimonio / filtradas.size();
 
         std::cout << "Grupo " << grupo << " - Promedio Patrimonio: " << promedio << std::endl;
+        
+        // Actualizar grupo con mayor promedio
         if (promedio > mayorPromedio) {
             mayorPromedio = promedio;
             grupoMayor = grupo;
@@ -520,30 +773,47 @@ std::string encontrarGrupoMayorPatrimonioPorValor(std::vector<Persona> personas)
     return grupoMayor;
 }
 
-// Encontrar grupo con mayor patrimonio en promedio por referencia
-
+/**
+ * Encuentra el grupo con mayor patrimonio promedio (VERSIÓN POR REFERENCIA).
+ * 
+ * ALGORITMO:
+ * 1. Itera sobre cada grupo (A, B, C)
+ * 2. Filtra personas de cada grupo usando punteros
+ * 3. Calcula promedio de patrimonio
+ * 4. Determina el grupo con mayor promedio
+ * 
+ * @param personas Vector de personas (referencia constante)
+ * @return String con el grupo que tiene mayor patrimonio promedio
+ * 
+ * SALIDA: Imprime promedios de cada grupo para análisis
+ * USO: Análisis socioeconómico, segmentación de mercado
+ */
 std::string encontrarGrupoMayorPatrimonioPorReferencia(const std::vector<Persona>& personas) {
     std::vector<std::string> grupos = {"A", "B", "C"};
     std::string grupoMayor;
     double mayorPromedio = 0.0;
-    std::vector<Persona> filtradas;
+    std::vector<const Persona*> filtradas;
 
     for (const auto& grupo : grupos) {
+        // Filtrar personas del grupo actual usando punteros
         for (const auto& p : personas) {
             if (p.getGrupoDeclaracion() == grupo) {
-                filtradas.push_back(p);
+                filtradas.push_back(&p);
             }
         }
 
         if (filtradas.empty()) continue;
 
+        // Calcular promedio de patrimonio del grupo
         double sumaPatrimonio = 0.0;
         for (const auto& p : filtradas) {
-            sumaPatrimonio += p.getPatrimonio();
+            sumaPatrimonio += p->getPatrimonio();
         }
         double promedio = sumaPatrimonio / filtradas.size();
 
         std::cout << "Grupo " << grupo << " - Promedio Patrimonio: " << promedio << std::endl;
+
+        // Actualizar grupo con mayor promedio
         if (promedio > mayorPromedio) {
             mayorPromedio = promedio;
             grupoMayor = grupo;
@@ -554,7 +824,21 @@ std::string encontrarGrupoMayorPatrimonioPorReferencia(const std::vector<Persona
     return grupoMayor;
 }
 
-// Encontrar grupo con mayor longevidad en promedio por valor
+/**
+ * Encuentra el grupo con mayor longevidad promedio (VERSIÓN POR VALOR).
+ * 
+ * ALGORITMO:
+ * 1. Itera sobre cada grupo (A, B, C)
+ * 2. Filtra personas de cada grupo
+ * 3. Calcula promedio de edad
+ * 4. Determina el grupo con mayor promedio
+ * 
+ * @param personas Vector de personas (copiado)
+ * @return String con el grupo que tiene mayor longevidad promedio
+ * 
+ * SALIDA: Imprime promedios de cada grupo para análisis
+ * USO: Análisis socioeconómico, segmentación de mercado
+ */
 std::string encontrarGrupoMayorLongevidadPorValor(std::vector<Persona> personas) {
     
     std::vector<std::string> grupos = {"A", "B", "C"};
@@ -562,6 +846,7 @@ std::string encontrarGrupoMayorLongevidadPorValor(std::vector<Persona> personas)
     double mayorPromedio = 0.0;
     std::vector<Persona> filtradas;
     for (auto grupo : grupos) {
+        // Filtrar personas del grupo actual
         for (auto p : personas) {
             if (p.getGrupoDeclaracion() == grupo) {
                 filtradas.push_back(p);
@@ -569,13 +854,17 @@ std::string encontrarGrupoMayorLongevidadPorValor(std::vector<Persona> personas)
         }
 
         if (filtradas.empty()) continue;
+        
+        // Calcular promedio de edad del grupo
         double sumaEdad = 0.0;
-        for (auto p : filtradas) {
+        for (const auto& p : filtradas) {
             sumaEdad += p.getEdad();
         }
         double promedio = sumaEdad / filtradas.size();
 
         std::cout << "Grupo " << grupo << " - Promedio Edad: " << promedio << std::endl;
+        
+        // Actualizar grupo con mayor promedio
         if (promedio > mayorPromedio) {
             mayorPromedio = promedio;
             grupoMayor = grupo;
@@ -586,30 +875,47 @@ std::string encontrarGrupoMayorLongevidadPorValor(std::vector<Persona> personas)
     return grupoMayor;
 }
 
-// Encontrar grupo con mayor longevidad en promedio por referencia
-
+/**
+ * Encuentra el grupo con mayor longevidad promedio (VERSIÓN POR REFERENCIA).
+ * 
+ * ALGORITMO:
+ * 1. Itera sobre cada grupo (A, B, C)
+ * 2. Filtra personas de cada grupo usando punteros
+ * 3. Calcula promedio de edad
+ * 4. Determina el grupo con mayor promedio
+ * 
+ * @param personas Vector de personas (referencia constante)
+ * @return String con el grupo que tiene mayor longevidad promedio
+ * 
+ * SALIDA: Imprime promedios de cada grupo para análisis
+ * USO: Análisis socioeconómico, segmentación de mercado
+ */
 std::string encontrarGrupoMayorLongevidadPorReferencia(const std::vector<Persona>& personas) {
     std::vector<std::string> grupos = {"A", "B", "C"};
     std::string grupoMayor;
     double mayorPromedio = 0.0;
-    std::vector<Persona> filtradas;
+    std::vector<const Persona*> filtradas;
 
     for (const auto& grupo : grupos) {
+        // Filtrar personas del grupo actual usando punteros
         for (const auto& p : personas) {
             if (p.getGrupoDeclaracion() == grupo) {
-                filtradas.push_back(p);
+                filtradas.push_back(&p);
             }
         }
 
         if (filtradas.empty()) continue;
 
+        // Calcular promedio de edad del grupo
         double sumaEdad = 0.0;
         for (const auto& p : filtradas) {
-            sumaEdad += p.getEdad();
+            sumaEdad += p->getEdad();
         }
         double promedio = sumaEdad / filtradas.size();
 
         std::cout << "Grupo " << grupo << " - Promedio Edad: " << promedio << std::endl;
+
+        // Actualizar grupo con mayor promedio
         if (promedio > mayorPromedio) {
             mayorPromedio = promedio;
             grupoMayor = grupo;
