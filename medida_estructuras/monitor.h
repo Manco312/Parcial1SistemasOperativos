@@ -44,7 +44,7 @@ public:
         fclose(file);
         
         // Obtener el tamaño de página del sistema
-        long page_size = sysconf(_SC_PAGESIZE) / (1024*1024); // Convertir a KB
+        long page_size = sysconf(_SC_PAGESIZE) / 1024; // Tamaño de página en KB
         
         // Memoria residente en KB (páginas * tamaño de página en KB)
         return resident * page_size;
